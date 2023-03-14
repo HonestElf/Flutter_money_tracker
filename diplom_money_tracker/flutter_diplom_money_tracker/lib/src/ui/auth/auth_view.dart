@@ -12,6 +12,6 @@ class _AuthViewState extends State<AuthView> {
   bool isLogin = true;
   @override
   Widget build(BuildContext context) {
-    return Container(child: LoginView());
+    return const LoginView();
   }
 }

@@ -1,91 +1,103 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_diplom_money_tracker/src/business/auth/firebase_auth_service.dart';
 
-class SignUpView extends StatelessWidget {
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
+
+  @override
+  State<SignUpView> createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
+  final GlobalKey<FormState> _loginForm = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Account'),
+        title: const Text('Create account'),
         centerTitle: true,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _CreateAccountEmail(emailController: _emailController),
-            const SizedBox(height: 30.0),
-            _CreateAccountPassword(passwordController: _passwordController),
-            const SizedBox(height: 30.0),
-            _SubmitButton(
-              email: _emailController.text,
-              password: _passwordController.text,
-            ),
-          ],
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width / 2,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Form(
+                key: _loginForm,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                          hintText: 'example@example.com'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Email is required';
+                        }
+                        if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                          return "Please enter a valid email address";
+                        }
+
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: const InputDecoration(hintText: 'Example'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Password is required';
+                        }
+
+                        if (value.length < 6) {
+                          return 'Password must be least 6 chars';
+                        }
+
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (_loginForm.currentState!.validate()) {
+                          try {
+                            await createUserWithEmailAndPassword(
+                                    _emailController.text,
+                                    _passwordController.text)
+                                .then((value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    duration: Duration(milliseconds: 1000),
+                                    backgroundColor: Colors.green,
+                                    content: Text('Account created...')),
+                              );
+                            });
+                          } catch (error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  duration: const Duration(milliseconds: 1000),
+                                  backgroundColor: Colors.red,
+                                  content: Text(error.toString())),
+                            );
+                          }
+                        }
+                      },
+                      child: const Text('Create'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    );
-  }
-}
-
-class _CreateAccountEmail extends StatelessWidget {
-  _CreateAccountEmail({
-    Key? key,
-    required this.emailController,
-  }) : super(key: key);
-  final TextEditingController emailController;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 2,
-      child: TextField(
-        controller: emailController,
-        decoration: const InputDecoration(hintText: 'Email'),
-      ),
-    );
-  }
-}
-
-class _CreateAccountPassword extends StatelessWidget {
-  _CreateAccountPassword({
-    Key? key,
-    required this.passwordController,
-  }) : super(key: key);
-  final TextEditingController passwordController;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 2,
-      child: TextField(
-        controller: passwordController,
-        obscureText: true,
-        decoration: const InputDecoration(
-          hintText: 'Password',
-        ),
-      ),
-    );
-  }
-}
-
-class _SubmitButton extends StatelessWidget {
-  _SubmitButton({
-    Key? key,
-    required this.email,
-    required this.password,
-  }) : super(key: key);
-  final String email, password;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
-        print('hello');
-      },
-      child: const Text('Create Account'),
     );
   }
 }

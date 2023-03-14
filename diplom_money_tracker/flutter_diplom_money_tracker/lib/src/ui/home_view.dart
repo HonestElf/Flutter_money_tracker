@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_diplom_money_tracker/src/business/auth/firebase_auth_service.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key, required this.title});
@@ -23,6 +24,9 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: const [
+          IconButton(onPressed: firebaseLogout, icon: Icon(Icons.logout))
+        ],
       ),
       body: Center(
         child: Column(

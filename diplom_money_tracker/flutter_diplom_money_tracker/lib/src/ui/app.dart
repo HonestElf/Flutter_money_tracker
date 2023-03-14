@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.userChanges(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return AuthView();
+              return const AuthView();
             } else {
-              return HomeView(title: 'Flutter Demo Home Page');
+              return const HomeView(title: 'Flutter Demo Home Page');
             }
           },
         ));

@@ -1,32 +1,44 @@
-// Future<UserEntity?> signInWithEmailAndPassword({
-//   required String email,
-//   required String password,
-// }) async {
-//   try {
-//     final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-//       email: email,
-//       password: password,
-//     );
+import 'package:firebase_auth/firebase_auth.dart';
 
-//     return _mapFirebaseUser(userCredential.user);
-//   } on auth.FirebaseAuthException catch (e) {
-//     throw _determineError(e);
-//   }
-// }
+String _determineError(FirebaseAuthException exception) {
+  switch (exception.code) {
+    case 'weak-password':
+      return 'The password provided is too weak.';
+    case 'email-already-in-use':
+      return 'The account already exists for that email.';
+    case 'user-not-found':
+      return 'No user found for that email.';
+    case 'wrong-password':
+      return 'Wrong password provided for that user.';
+    default:
+      return 'Unknown error';
+  }
+}
 
-// @override
-// Future<UserEntity?> createUserWithEmailAndPassword({
-//   required String email,
-//   required String password,
-// }) async {
-//   try {
-//     final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-//       email: email,
-//       password: password,
-//     );
+Future<void> createUserWithEmailAndPassword(
+    String emailAddress, String password) async {
+  try {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailAddress, password: password);
+  } on FirebaseAuthException catch (error) {
+    throw _determineError(error);
+  } catch (e) {
+    throw e.toString();
+  }
+}
 
-//     return _mapFirebaseUser(_firebaseAuth.currentUser);
-//   } on auth.FirebaseAuthException catch (e) {
-//     throw _determineError(e);
-//   }
-// }
+Future<void> signInWithEmailAndPassword(
+    String emailAddress, String password) async {
+  try {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: emailAddress, password: password);
+  } on FirebaseAuthException catch (error) {
+    throw _determineError(error);
+  } catch (e) {
+    throw e.toString();
+  }
+}
+
+void firebaseLogout() async {
+  await FirebaseAuth.instance.signOut();
+}

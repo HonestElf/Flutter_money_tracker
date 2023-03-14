@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_diplom_money_tracker/src/business/auth/firebase_auth_service.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/auth/signup_view.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final GlobalKey<FormState> _loginForm = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,85 +21,108 @@ class LoginView extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _LoginEmail(emailController: _emailController),
-            const SizedBox(height: 30.0),
-            _LoginPassword(passwordController: _passwordController),
-            const SizedBox(height: 30.0),
-            _SubmitButton(
-              email: _emailController.text,
-              password: _passwordController.text,
-            ),
-            const SizedBox(height: 30.0),
-            _CreateAccountButton(),
-          ],
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width / 2,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Form(
+                key: _loginForm,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                          hintText: 'example@example.com'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Email is required';
+                        }
+                        if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                          return "Please enter a valid email address";
+                        }
+
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: const InputDecoration(hintText: 'Example'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Password is required';
+                        }
+
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (_loginForm.currentState!.validate()) {
+                          try {
+                            await signInWithEmailAndPassword(
+                                    _emailController.text,
+                                    _passwordController.text)
+                                .then((value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    duration: Duration(milliseconds: 1000),
+                                    backgroundColor: Colors.green,
+                                    content: Text('Entering...')),
+                              );
+                            });
+                          } catch (error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  duration: const Duration(milliseconds: 1000),
+                                  backgroundColor: Colors.red,
+                                  content: Text(error.toString())),
+                            );
+                          }
+                        }
+                      },
+                      child: const Text('Login'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          await signInWithEmailAndPassword(
+                                  'test@test.com', 'testtest')
+                              .then((value) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  duration: Duration(milliseconds: 1000),
+                                  backgroundColor: Colors.green,
+                                  content: Text('Entering...')),
+                            );
+                          });
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                duration: const Duration(milliseconds: 1000),
+                                backgroundColor: Colors.red,
+                                content: Text(error.toString())),
+                          );
+                        }
+                      },
+                      child: const Text('DEV Login'),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              const _CreateAccountButton(),
+            ],
+          ),
         ),
       ),
-    );
-  }
-}
-
-class _LoginEmail extends StatelessWidget {
-  _LoginEmail({
-    Key? key,
-    required this.emailController,
-  }) : super(key: key);
-
-  final TextEditingController emailController;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 2,
-      child: TextField(
-        controller: emailController,
-        decoration: const InputDecoration(hintText: 'Email'),
-      ),
-    );
-  }
-}
-
-class _LoginPassword extends StatelessWidget {
-  _LoginPassword({
-    Key? key,
-    required this.passwordController,
-  }) : super(key: key);
-
-  final TextEditingController passwordController;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 2,
-      child: TextField(
-        controller: passwordController,
-        obscureText: true,
-        decoration: const InputDecoration(
-          hintText: 'Password',
-        ),
-      ),
-    );
-  }
-}
-
-class _SubmitButton extends StatelessWidget {
-  _SubmitButton({
-    Key? key,
-    required this.email,
-    required this.password,
-  }) : super(key: key);
-
-  final String email, password;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
-        print('hello');
-      },
-      child: const Text('Login'),
     );
   }
 }
@@ -105,7 +136,7 @@ class _CreateAccountButton extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => SignUpView(),
+            builder: (context) => const SignUpView(),
           ),
         );
       },
