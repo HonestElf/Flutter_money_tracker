@@ -4,7 +4,8 @@ import 'package:flutter_diplom_money_tracker/src/ui/home/cost_category_card.dart
 
 final List<CostCategory> categories = [
   CostCategory(categoryName: 'Cat', categoryColor: 'F2B846'),
-  CostCategory(categoryName: 'Home', categoryColor: '46B4F2')
+  CostCategory(categoryName: 'Home', categoryColor: '46B4F2'),
+  CostCategory(categoryName: 'Other', categoryColor: '9053EB')
 ];
 
 class CostsView extends StatefulWidget {

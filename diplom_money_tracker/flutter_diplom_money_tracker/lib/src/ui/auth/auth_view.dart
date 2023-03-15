@@ -20,14 +20,8 @@ class _AuthViewState extends State<AuthView> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
             child: Column(
-              // mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // const Expanded(flex: 2, child: AuthViewBody()),
-                // Expanded(
-                //   flex: 2,
-                //   child: _isLogin ? const LoginView() : const SignUpView(),
-                // ),
                 const AuthViewBody(),
                 const SizedBox(
                   height: 70,
@@ -71,7 +65,7 @@ class AuthViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 200,
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

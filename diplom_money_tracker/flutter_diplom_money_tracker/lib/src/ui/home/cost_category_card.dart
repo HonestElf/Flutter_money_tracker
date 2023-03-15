@@ -25,7 +25,7 @@ class CostCategoryCard extends StatelessWidget {
       child: ListTile(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CategoryView(),
+            builder: (context) => const CategoryView(),
           ));
         },
         title: Text(category.categoryName),
