@@ -30,6 +30,7 @@ class _CategoryViewState extends State<CategoryView> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
+            backgroundColor: const Color(0xFF9053EB),
             actions: [
               IconButton(
                   onPressed: () {
