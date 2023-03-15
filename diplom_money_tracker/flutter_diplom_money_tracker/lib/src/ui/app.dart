@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/auth/auth_view.dart';
-import 'package:flutter_diplom_money_tracker/src/ui/home_view.dart';
+import 'package:flutter_diplom_money_tracker/src/ui/home/home_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MyApp extends StatelessWidget {
