@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-class MonthView extends StatefulWidget {
-  const MonthView({super.key});
+class CostsPieChart extends StatefulWidget {
+  const CostsPieChart({super.key});
 
   @override
-  State<MonthView> createState() => _MonthViewState();
+  State<CostsPieChart> createState() => _CostsPieChartState();
 }
 
-class _MonthViewState extends State<MonthView> {
+class _CostsPieChartState extends State<CostsPieChart> {
   @override
   Widget build(BuildContext context) {
     return Container(

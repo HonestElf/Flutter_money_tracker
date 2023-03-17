@@ -11,18 +11,19 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
-    // return Column(children: [
-    //   CircleAvatar(radius: 40),
-    //   IconButton(onPressed: firebaseLogout, icon: Icon(Icons.logout))
-    // ]);
-    return const Padding(
-      padding: EdgeInsets.all(25),
-      child: ListTile(
-        title: Text('user email'),
-        subtitle:
-            ElevatedButton(onPressed: firebaseLogout, child: Text('Выйти')),
-        leading: CircleAvatar(
-          radius: 40,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF9053EB),
+      ),
+      body: const Padding(
+        padding: EdgeInsets.all(25),
+        child: ListTile(
+          title: Text('user email'),
+          subtitle:
+              ElevatedButton(onPressed: firebaseLogout, child: Text('Выйти')),
+          leading: CircleAvatar(
+            radius: 40,
+          ),
         ),
       ),
     );

@@ -10,7 +10,7 @@ class AddCostModal extends StatefulWidget {
 class _AddCostModalState extends State<AddCostModal> {
   final TextEditingController _nameController = TextEditingController();
 
-  late String? currentDate;
+  String? currentDate;
 
   @override
   void dispose() {
@@ -26,6 +26,21 @@ class _AddCostModalState extends State<AddCostModal> {
     DateTime now = DateTime.now();
 
     currentDate = '${now.day}/${now.month}/${now.year}';
+  }
+
+  void openDateModal() async {
+    final chosenDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2023),
+        lastDate: DateTime.now());
+
+    if (chosenDate != null) {
+      setState(() {
+        currentDate =
+            '${chosenDate.day}/${chosenDate.month}/${chosenDate.year}';
+      });
+    }
   }
 
   @override
@@ -47,10 +62,12 @@ class _AddCostModalState extends State<AddCostModal> {
                     fontWeight: FontWeight.w700,
                     fontSize: 20,
                   )),
-              Text(
-                currentDate ?? '--/--/--',
-                style: const TextStyle(fontSize: 12),
-              )
+              TextButton(
+                  onPressed: openDateModal,
+                  child: Text(
+                    currentDate ?? '--/--/--',
+                    style: const TextStyle(fontSize: 12, color: Colors.black),
+                  ))
             ],
           ),
           const SizedBox(

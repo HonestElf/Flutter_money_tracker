@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/category_view/category_view.dart';
+import 'package:flutter_diplom_money_tracker/src/ui/modals/add_cost_modal.dart';
 
-class CostCategoryCard extends StatelessWidget {
+class CostCategoryCard extends StatefulWidget {
   const CostCategoryCard({super.key, required this.category});
-
   final CostCategory category;
+
+  @override
+  State<CostCategoryCard> createState() => _CostCategoryCardState();
+}
+
+class _CostCategoryCardState extends State<CostCategoryCard> {
+  void openModalWindow() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AddCostModal();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +37,17 @@ class CostCategoryCard extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const CategoryView(),
-          ));
-        },
-        title: Text(category.categoryName),
+        onTap: openModalWindow,
+        title: Text(widget.category.categoryName),
         subtitle: const Text('Всего: 0'),
-        trailing: const Icon(
-          Icons.keyboard_arrow_right_outlined,
-          size: 40,
+        trailing: IconButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(CategoryView.routeName);
+          },
+          icon: const Icon(
+            Icons.keyboard_arrow_right_outlined,
+            size: 40,
+          ),
         ),
       ),
     );

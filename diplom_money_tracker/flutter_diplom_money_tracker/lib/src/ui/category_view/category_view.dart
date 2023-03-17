@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_item.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/category_view/cost_card.dart';
-import 'package:flutter_diplom_money_tracker/src/ui/modals/add_cost_modal.dart';
 
 final List<CostItem> items = [
   CostItem(costPrice: 30, costDay: '30/12/2012'),
@@ -9,6 +8,7 @@ final List<CostItem> items = [
 ];
 
 class CategoryView extends StatefulWidget {
+  static const routeName = 'currentCategory';
   const CategoryView({super.key});
 
   @override
@@ -16,28 +16,12 @@ class CategoryView extends StatefulWidget {
 }
 
 class _CategoryViewState extends State<CategoryView> {
-  void openModalWindow() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const AddCostModal();
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: const Color(0xFF9053EB),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    openModalWindow();
-                  },
-                  icon: const Icon(Icons.add))
-            ],
           ),
           body: ListView.separated(
             itemCount: items.length,
