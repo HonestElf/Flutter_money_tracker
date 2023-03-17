@@ -4,7 +4,7 @@ import 'package:flutter_diplom_money_tracker/src/ui/home/costs_view.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/home/costs_pie_chart.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/modals/add_category_modal.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/utils/month_parser.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MonthView extends StatefulWidget {
   const MonthView({super.key});
@@ -15,6 +15,8 @@ class MonthView extends StatefulWidget {
 }
 
 class _MonthViewState extends State<MonthView> {
+// late CollectionReference
+
   String? chosenMonth;
   @override
   void initState() {
