@@ -42,3 +42,7 @@ Future<void> signInWithEmailAndPassword(
 void firebaseLogout() async {
   await FirebaseAuth.instance.signOut();
 }
+
+User? getUserData() {
+  return FirebaseAuth.instance.currentUser;
+}
