@@ -84,7 +84,7 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
           radius: 40,
           backgroundImage: _imageUrl != null
               ? NetworkImage(_imageUrl!)
-              : const AssetImage('assets/images/altAvatar.jpg')
+              : const AssetImage('assets/images/defaultAvatar.png')
                   as ImageProvider,
         ));
   }

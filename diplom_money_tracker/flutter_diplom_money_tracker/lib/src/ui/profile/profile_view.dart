@@ -24,6 +24,11 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Профиль',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+        ),
         backgroundColor: const Color(0xFF9053EB),
       ),
       body: _currentUser != null
