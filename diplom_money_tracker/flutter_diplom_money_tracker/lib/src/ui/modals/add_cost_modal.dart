@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
 
 class AddCostModal extends StatefulWidget {
   const AddCostModal({super.key});
@@ -43,6 +44,28 @@ class _AddCostModalState extends State<AddCostModal> {
     }
   }
 
+  void addCostToCategory() {
+    if (_nameController.text != '') {
+      try {
+        addCost('asd', int.parse(_nameController.text), currentDate!);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              duration: Duration(milliseconds: 1000),
+              backgroundColor: Colors.green,
+              content: Text('Добавляем...')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              duration: const Duration(milliseconds: 1000),
+              backgroundColor: Colors.red,
+              content: Text(e.toString())),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -75,6 +98,7 @@ class _AddCostModalState extends State<AddCostModal> {
           ),
           TextField(
             controller: _nameController,
+            keyboardType: TextInputType.number,
             decoration: const InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF9053EB), width: 1),
@@ -99,6 +123,7 @@ class _AddCostModalState extends State<AddCostModal> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                addCostToCategory();
               },
               child: const Text('Добавить', style: TextStyle(fontSize: 17))),
           ElevatedButton(
