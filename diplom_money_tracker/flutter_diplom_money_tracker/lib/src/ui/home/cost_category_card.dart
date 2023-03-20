@@ -23,6 +23,11 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
 
   @override
   Widget build(BuildContext context) {
+    double costsSum = 0;
+
+    for (var element in widget.category.items) {
+      costsSum += element.costPrice.toDouble();
+    }
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 25),
       decoration: BoxDecoration(
@@ -39,7 +44,7 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
       child: ListTile(
         onTap: openModalWindow,
         title: Text(widget.category.categoryName),
-        subtitle: const Text('Всего: 0'),
+        subtitle: Text('Всего: $costsSum'),
         trailing: IconButton(
           onPressed: () {
             Navigator.of(context).pushNamed(CategoryView.routeName,

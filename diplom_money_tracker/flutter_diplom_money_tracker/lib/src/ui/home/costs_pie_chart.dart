@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
 
 class CostsPieChart extends StatefulWidget {
-  const CostsPieChart({super.key});
+  const CostsPieChart({super.key, required this.categories});
+  final List<CostCategory> categories;
 
   @override
   State<CostsPieChart> createState() => _CostsPieChartState();
@@ -19,9 +21,14 @@ class _CostsPieChartState extends State<CostsPieChart> {
           borderData: FlBorderData(
               border: Border.all(color: Colors.red, width: 10), show: true),
           sections: [
-            PieChartSectionData(value: 40, radius: 70),
-            PieChartSectionData(value: 40, radius: 70),
-            PieChartSectionData(value: 20, radius: 70)
+            ...widget.categories.map((category) {
+              double costsSum = 0;
+
+              for (var element in category.items) {
+                costsSum += element.costPrice.toDouble();
+              }
+              return PieChartSectionData(value: costsSum, radius: 70);
+            })
           ])),
     );
   }

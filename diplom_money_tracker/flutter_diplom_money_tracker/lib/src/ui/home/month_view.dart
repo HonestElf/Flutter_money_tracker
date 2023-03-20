@@ -77,27 +77,30 @@ class _MonthViewState extends State<MonthView> {
               icon: const Icon(Icons.add))
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Expanded(flex: 4, child: CostsPieChart()),
-          Expanded(
-            flex: 5,
-            child: StreamBuilder(
-              stream: _categories
-                  ?.snapshots()
-                  .map((event) => event.docs.map((e) => e.data()).toList()),
-              builder: (context, snapshot) {
-                return snapshot.hasData
-                    ? CostsView(
-                        categories: snapshot.data!,
-                      )
-                    : const Center(child: CircularProgressIndicator());
-              },
-            ),
-          ),
-        ],
-      ),
+      body: StreamBuilder<List<CostCategory>>(
+          stream: _categories
+              ?.snapshots()
+              .map((event) => event.docs.map((e) => e.data()).toList()),
+          builder: (context, snapshot) {
+            return snapshot.hasData
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 4,
+                        child: CostsPieChart(
+                          categories: snapshot.data!,
+                        ),
+                      ),
+                      Expanded(
+                          flex: 5,
+                          child: CostsView(
+                            categories: snapshot.data!,
+                          )),
+                    ],
+                  )
+                : const Center(child: CircularProgressIndicator());
+          }),
     );
   }
 }
