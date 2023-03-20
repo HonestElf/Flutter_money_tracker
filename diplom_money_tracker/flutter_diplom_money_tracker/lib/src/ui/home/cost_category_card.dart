@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
+import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/category_view/category_view.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/modals/add_cost_modal.dart';
 
@@ -19,6 +20,10 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
         return const AddCostModal();
       },
     );
+  }
+
+  void deleteCategoryItem() {
+    deleteCategory(widget.category.categoryName);
   }
 
   @override
@@ -42,6 +47,8 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
         ],
       ),
       child: ListTile(
+        leading:
+            IconButton(onPressed: deleteCategoryItem, icon: Icon(Icons.delete)),
         onTap: openModalWindow,
         title: Text(widget.category.categoryName),
         subtitle: Text('Всего: $costsSum'),

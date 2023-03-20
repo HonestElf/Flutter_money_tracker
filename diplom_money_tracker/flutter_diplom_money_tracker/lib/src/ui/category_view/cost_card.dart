@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_item.dart';
+import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
 
 class CostCard extends StatelessWidget {
   const CostCard({super.key, required this.item});
 
   final CostItem item;
+
+  void deleteCostItem() {
+    print(1111);
+    try {
+      deleteCost(item);
+    } catch (e) {
+      print('ERROR: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +32,13 @@ class CostCard extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        onTap: () {},
         title: Text(item.costPrice.toString()),
         subtitle: Text(item.costDay),
+        trailing: IconButton(
+            onPressed: () {
+              deleteCostItem();
+            },
+            icon: Icon(Icons.delete)),
       ),
     );
   }
