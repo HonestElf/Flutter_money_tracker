@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
-import 'package:flutter_diplom_money_tracker/src/data/cost_item.dart';
-import 'package:flutter_diplom_money_tracker/src/ui/category_view/category_view.dart';
 
 CollectionReference<CostCategory>? getAllCategories() {
   try {

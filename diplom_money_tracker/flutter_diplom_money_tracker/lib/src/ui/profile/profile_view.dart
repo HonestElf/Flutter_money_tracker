@@ -45,7 +45,7 @@ class _ProfileViewState extends State<ProfileView> {
                     children: [
                       Text(
                         _currentUser!.email!,
-                        style: TextStyle(fontSize: 17),
+                        style: const TextStyle(fontSize: 17),
                       ),
                       const SizedBox(
                         height: 15,
