@@ -82,8 +82,15 @@ class HomeViewBody extends StatelessWidget {
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case CategoryView.routeName:
+            final args = settings.arguments as Map<String, dynamic>;
+            if (args.containsKey('categoryName')) {
+              return MaterialPageRoute(
+                builder: (_) =>
+                    CategoryView(categoryName: args['categoryName']),
+              );
+            }
             return MaterialPageRoute(
-              builder: (_) => const CategoryView(),
+              builder: (_) => const NotFoundView(),
             );
           case MonthView.routeName:
             return MaterialPageRoute(

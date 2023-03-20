@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
+import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
 
 class AddCategoryModal extends StatefulWidget {
   const AddCategoryModal({super.key});
@@ -11,12 +14,45 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _colorController = TextEditingController();
 
+  late CollectionReference<CostCategory>? _categories;
+
   @override
   void dispose() {
     _nameController.dispose();
     _colorController.dispose();
 
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _categories = getAllCategories();
+  }
+
+  void addItem() {
+    if (_categories != null &&
+        _nameController.text != '' &&
+        _colorController.text != '') {
+      try {
+        addCategory(_nameController.text, _colorController.text);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              duration: Duration(milliseconds: 1000),
+              backgroundColor: Colors.green,
+              content: Text('Добавляем...')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              duration: const Duration(milliseconds: 1000),
+              backgroundColor: Colors.red,
+              content: Text(e.toString())),
+        );
+      }
+    }
   }
 
   @override
@@ -73,6 +109,7 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
+                  addItem();
                 },
                 child: const Text('Добавить', style: TextStyle(fontSize: 17))),
             ElevatedButton(

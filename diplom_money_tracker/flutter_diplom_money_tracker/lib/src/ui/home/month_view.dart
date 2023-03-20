@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
+import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
 
 import 'package:flutter_diplom_money_tracker/src/ui/home/costs_view.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/home/costs_pie_chart.dart';
@@ -15,7 +17,7 @@ class MonthView extends StatefulWidget {
 }
 
 class _MonthViewState extends State<MonthView> {
-// late CollectionReference
+  late CollectionReference<CostCategory>? _categories;
 
   String? chosenMonth;
   @override
@@ -23,6 +25,8 @@ class _MonthViewState extends State<MonthView> {
     super.initState();
 
     chosenMonth = parseMonth(DateTime.now().month);
+
+    _categories = getAllCategories();
   }
 
   void openAddModal() {
@@ -75,9 +79,23 @@ class _MonthViewState extends State<MonthView> {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const <Widget>[
-          Expanded(flex: 4, child: CostsPieChart()),
-          Expanded(flex: 5, child: CostsView())
+        children: <Widget>[
+          const Expanded(flex: 4, child: CostsPieChart()),
+          Expanded(
+            flex: 5,
+            child: StreamBuilder(
+              stream: _categories
+                  ?.snapshots()
+                  .map((event) => event.docs.map((e) => e.data()).toList()),
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? CostsView(
+                        categories: snapshot.data!,
+                      )
+                    : const Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
         ],
       ),
     );

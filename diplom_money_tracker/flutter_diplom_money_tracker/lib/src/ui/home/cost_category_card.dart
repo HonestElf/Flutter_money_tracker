@@ -42,7 +42,8 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
         subtitle: const Text('Всего: 0'),
         trailing: IconButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(CategoryView.routeName);
+            Navigator.of(context).pushNamed(CategoryView.routeName,
+                arguments: {'categoryName': widget.category.categoryName});
           },
           icon: const Icon(
             Icons.keyboard_arrow_right_outlined,

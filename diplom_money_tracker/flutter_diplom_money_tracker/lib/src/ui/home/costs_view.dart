@@ -9,7 +9,8 @@ final List<CostCategory> categories = [
 ];
 
 class CostsView extends StatefulWidget {
-  const CostsView({super.key});
+  final List<CostCategory> categories;
+  const CostsView({super.key, required this.categories});
 
   @override
   State<CostsView> createState() => _CostsViewState();
@@ -19,12 +20,12 @@ class _CostsViewState extends State<CostsView> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: categories.length,
+      itemCount: widget.categories.length,
       separatorBuilder: (context, index) => const SizedBox(
         height: 25,
       ),
       itemBuilder: (context, index) =>
-          CostCategoryCard(category: categories[index]),
+          CostCategoryCard(category: widget.categories[index]),
       padding: const EdgeInsets.all(25),
     );
   }
