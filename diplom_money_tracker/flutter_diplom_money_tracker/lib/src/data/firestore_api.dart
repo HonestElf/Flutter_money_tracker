@@ -1,18 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_diplom_money_tracker/src/business/auth/firebase_auth_service.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_item.dart';
 
-CollectionReference<CostCategory>? getAllCategories() {
+CollectionReference<CostCategory>? getFirebaseCollection() {
   try {
-    final categories = FirebaseFirestore.instance
-        .collection('testUsercollection')
-        .withConverter(
-          fromFirestore: (snapshot, options) =>
-              CostCategory.fromJson(snapshot.data()!),
-          toFirestore: (value, options) => value.toJson(),
-        );
+    final userId = getUserData()?.uid;
 
-    return categories;
+    if (userId != null) {
+      final collection =
+          FirebaseFirestore.instance.collection(userId).withConverter(
+                fromFirestore: (snapshot, options) =>
+                    CostCategory.fromJson(snapshot.data()!),
+                toFirestore: (value, options) => value.toJson(),
+              );
+
+      return collection;
+    } else {
+      throw 'Unauthorized user';
+    }
   } catch (error) {
     print('ERROR: ${error.toString()}');
   }
@@ -20,15 +26,7 @@ CollectionReference<CostCategory>? getAllCategories() {
 
 String addCategory(String name, String color) {
   try {
-    final categories = FirebaseFirestore.instance
-        .collection('testUsercollection')
-        .withConverter(
-          fromFirestore: (snapshot, options) =>
-              CostCategory.fromJson(snapshot.data()!),
-          toFirestore: (value, options) => value.toJson(),
-        );
-
-    categories
+    getFirebaseCollection()!
         .doc(name)
         .set(CostCategory(categoryName: name, categoryColor: color, items: []));
     return 'Success';
@@ -39,10 +37,7 @@ String addCategory(String name, String color) {
 
 String addCost(String categoryName, num price, String date) {
   try {
-    final document = FirebaseFirestore.instance
-        .collection('testUsercollection')
-        .doc('jiMjjEpUqv4nUQ783lmx')
-        .withConverter(
+    final document = getFirebaseCollection()!.doc(categoryName).withConverter(
           fromFirestore: (snapshot, options) =>
               CostCategory.fromJson(snapshot.data()!),
           toFirestore: (value, options) => value.toJson(),
@@ -60,12 +55,9 @@ String addCost(String categoryName, num price, String date) {
   }
 }
 
-void deleteCost(CostItem item) {
+void deleteCost(String categoryName, CostItem item) {
   try {
-    final document = FirebaseFirestore.instance
-        .collection('testUsercollection')
-        .doc('jiMjjEpUqv4nUQ783lmx')
-        .withConverter(
+    final document = getFirebaseCollection()!.doc(categoryName).withConverter(
           fromFirestore: (snapshot, options) =>
               CostItem.fromJson(snapshot.data()!),
           toFirestore: (value, options) => value.toJson(),
@@ -85,7 +77,7 @@ void deleteCategory(String categoryName) {
   try {
     FirebaseFirestore.instance
         .collection('testUsercollection')
-        .doc('sectest')
+        .doc(categoryName)
         .delete();
   } catch (error) {
     throw error.toString();

@@ -17,13 +17,20 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
     showDialog(
       context: context,
       builder: (context) {
-        return const AddCostModal();
+        return AddCostModal(positiveCallback: addCostCallback);
       },
     );
   }
 
   void deleteCategoryItem() {
     deleteCategory(widget.category.categoryName);
+  }
+
+  void addCostCallback(
+    num price,
+    String date,
+  ) {
+    addCost(widget.category.categoryName, price, date);
   }
 
   @override
@@ -47,8 +54,8 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
         ],
       ),
       child: ListTile(
-        leading:
-            IconButton(onPressed: deleteCategoryItem, icon: Icon(Icons.delete)),
+        leading: IconButton(
+            onPressed: deleteCategoryItem, icon: const Icon(Icons.delete)),
         onTap: openModalWindow,
         title: Text(widget.category.categoryName),
         subtitle: Text('Всего: $costsSum'),

@@ -3,14 +3,14 @@ import 'package:flutter_diplom_money_tracker/src/data/cost_item.dart';
 import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
 
 class CostCard extends StatelessWidget {
-  const CostCard({super.key, required this.item});
+  const CostCard({super.key, required this.item, required this.categoryName});
 
   final CostItem item;
+  final String categoryName;
 
   void deleteCostItem() {
-    print(1111);
     try {
-      deleteCost(item);
+      deleteCost(categoryName, item);
     } catch (e) {
       print('ERROR: $e');
     }
@@ -38,7 +38,7 @@ class CostCard extends StatelessWidget {
             onPressed: () {
               deleteCostItem();
             },
-            icon: Icon(Icons.delete)),
+            icon: const Icon(Icons.delete)),
       ),
     );
   }

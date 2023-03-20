@@ -26,7 +26,7 @@ class _MonthViewState extends State<MonthView> {
 
     chosenMonth = parseMonth(DateTime.now().month);
 
-    _categories = getAllCategories();
+    _categories = getFirebaseCollection();
   }
 
   void openAddModal() {

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_item.dart';
+import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/category_view/cost_card.dart';
 
 final List<CostItem> items = [
@@ -25,10 +26,7 @@ class _CategoryViewState extends State<CategoryView> {
   void initState() {
     super.initState();
 
-    _document = FirebaseFirestore.instance
-        .collection('testUsercollection')
-        .doc('jiMjjEpUqv4nUQ783lmx')
-        .withConverter(
+    _document = getFirebaseCollection()!.doc(widget.categoryName).withConverter(
           fromFirestore: (snapshot, options) =>
               CostCategory.fromJson(snapshot.data()!),
           toFirestore: (value, options) => value.toJson(),
@@ -57,8 +55,9 @@ class _CategoryViewState extends State<CategoryView> {
                     separatorBuilder: (context, index) => const SizedBox(
                       height: 25,
                     ),
-                    itemBuilder: (context, index) =>
-                        CostCard(item: itemsList[index]),
+                    itemBuilder: (context, index) => CostCard(
+                        item: itemsList[index],
+                        categoryName: widget.categoryName),
                     padding: const EdgeInsets.all(25),
                   );
                 }

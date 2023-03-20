@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
 
 class AddCostModal extends StatefulWidget {
-  const AddCostModal({super.key});
+  const AddCostModal({super.key, required this.positiveCallback});
+  final Function positiveCallback;
 
   @override
   State<AddCostModal> createState() => _AddCostModalState();
 }
 
 class _AddCostModalState extends State<AddCostModal> {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
 
   String? currentDate;
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _priceController.dispose();
 
     super.dispose();
   }
@@ -45,9 +45,9 @@ class _AddCostModalState extends State<AddCostModal> {
   }
 
   void addCostToCategory() {
-    if (_nameController.text != '') {
+    if (_priceController.text != '') {
       try {
-        addCost('asd', int.parse(_nameController.text), currentDate!);
+        widget.positiveCallback(int.parse(_priceController.text), currentDate!);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -97,7 +97,7 @@ class _AddCostModalState extends State<AddCostModal> {
             height: 30,
           ),
           TextField(
-            controller: _nameController,
+            controller: _priceController,
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
                 focusedBorder: OutlineInputBorder(

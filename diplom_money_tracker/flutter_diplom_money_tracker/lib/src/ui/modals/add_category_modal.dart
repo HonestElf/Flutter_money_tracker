@@ -28,7 +28,7 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
   void initState() {
     super.initState();
 
-    _categories = getAllCategories();
+    _categories = getFirebaseCollection();
   }
 
   void addItem() {
