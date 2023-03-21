@@ -7,6 +7,7 @@ import 'package:flutter_diplom_money_tracker/src/ui/home/costs_pie_chart.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/modals/add_category_modal.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/utils/month_parser.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class MonthView extends StatefulWidget {
   const MonthView({super.key});
@@ -20,11 +21,16 @@ class _MonthViewState extends State<MonthView> {
   late CollectionReference<CostCategory>? _categories;
 
   int? chosenMonth;
+  int? chosenYear;
+
   @override
   void initState() {
     super.initState();
 
-    chosenMonth = DateTime.now().month;
+    final currentDate = DateTime.now();
+
+    chosenMonth = currentDate.month;
+    chosenYear = currentDate.year;
 
     _categories = getFirebaseCollection();
   }
@@ -39,16 +45,17 @@ class _MonthViewState extends State<MonthView> {
   }
 
   void openDateModal() async {
-    final chosenDate = await showDatePicker(
-        initialDatePickerMode: DatePickerMode.year,
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2020),
-        lastDate: DateTime.now());
+    final chosenDate = await showMonthPicker(
+      context: context,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      initialDate: DateTime.now(),
+    );
 
     if (chosenDate != null) {
       setState(() {
         chosenMonth = chosenDate.month;
+        chosenYear = chosenDate.year;
       });
     }
   }
@@ -84,11 +91,11 @@ class _MonthViewState extends State<MonthView> {
                 return CostCategory(
                     categoryName: temp.categoryName,
                     categoryColor: temp.categoryColor,
-                    items: temp.items
-                        .where((element) =>
-                            DateTime.parse(element.costDay).month ==
-                            chosenMonth)
-                        .toList());
+                    items: temp.items.where((element) {
+                      final parsedDate = DateTime.parse(element.costDay);
+                      return parsedDate.month == chosenMonth &&
+                          parsedDate.year == chosenYear;
+                    }).toList());
               }).toList()),
           builder: (context, snapshot) {
             return snapshot.hasData

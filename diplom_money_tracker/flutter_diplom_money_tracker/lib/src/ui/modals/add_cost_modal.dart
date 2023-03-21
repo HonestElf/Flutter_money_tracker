@@ -27,20 +27,20 @@ class _AddCostModalState extends State<AddCostModal> {
     DateTime now = DateTime.now();
 
     currentDate =
-        '${now.year}-${now.month < 9 ? '0${now.month}' : now.month}-${now.day < 9 ? '0${now.day}' : now.day}';
+        '${now.year}-${now.month <= 9 ? '0${now.month}' : now.month}-${now.day <= 9 ? '0${now.day}' : now.day}';
   }
 
   void openDateModal() async {
     final chosenDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2023),
+        firstDate: DateTime(2020),
         lastDate: DateTime.now());
 
     if (chosenDate != null) {
       setState(() {
         currentDate =
-            '${chosenDate.year}-${chosenDate.month < 9 ? '0${chosenDate.month}' : chosenDate.month}-${chosenDate.day < 9 ? '0${chosenDate.day}' : chosenDate.day}';
+            '${chosenDate.year}-${chosenDate.month <= 9 ? '0${chosenDate.month}' : chosenDate.month}-${chosenDate.day <= 9 ? '0${chosenDate.day}' : chosenDate.day}';
       });
     }
   }
