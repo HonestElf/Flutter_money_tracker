@@ -85,6 +85,7 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
             ),
             TextField(
               controller: _colorController,
+              maxLength: 6,
               decoration: const InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFF9053EB), width: 1),
