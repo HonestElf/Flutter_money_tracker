@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
+import 'package:flutter_diplom_money_tracker/src/ui/category_view/category_view.dart';
 
 import 'package:flutter_diplom_money_tracker/src/ui/home/costs_view.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/home/costs_pie_chart.dart';
@@ -60,6 +61,15 @@ class _MonthViewState extends State<MonthView> {
     }
   }
 
+  void navigateToCategory(String categoryName, String categoryColor) {
+    Navigator.of(context).pushNamed(CategoryView.routeName, arguments: {
+      'chosenMonth': chosenMonth,
+      'chosenYear': chosenYear,
+      'categoryName': categoryName,
+      'categoryColor': categoryColor
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,8 +121,8 @@ class _MonthViewState extends State<MonthView> {
                       Expanded(
                           flex: 5,
                           child: CostsView(
-                            categories: snapshot.data!,
-                          )),
+                              categories: snapshot.data!,
+                              navigateCallback: navigateToCategory)),
                     ],
                   )
                 : const Center(child: CircularProgressIndicator());

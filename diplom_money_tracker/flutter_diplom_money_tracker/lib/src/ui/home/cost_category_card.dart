@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
-import 'package:flutter_diplom_money_tracker/src/ui/category_view/category_view.dart';
+// import 'package:flutter_diplom_money_tracker/src/ui/category_view/category_view.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/modals/add_cost_modal.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/utils/color_parser.dart';
 
 class CostCategoryCard extends StatefulWidget {
-  const CostCategoryCard({super.key, required this.category});
+  const CostCategoryCard(
+      {super.key, required this.category, required this.navigateCallback});
   final CostCategory category;
+  final Function navigateCallback;
 
   @override
   State<CostCategoryCard> createState() => _CostCategoryCardState();
@@ -80,11 +82,13 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
           subtitle: Text('Всего: $costsSum'),
           trailing: IconButton(
             onPressed: () {
-              Navigator.of(context)
-                  .pushNamed(CategoryView.routeName, arguments: {
-                'categoryName': widget.category.categoryName,
-                'categoryColor': widget.category.categoryColor
-              });
+              widget.navigateCallback(
+                  widget.category.categoryName, widget.category.categoryColor);
+              // Navigator.of(context)
+              //     .pushNamed(CategoryView.routeName, arguments: {
+              //   'categoryName': widget.category.categoryName,
+              //   'categoryColor': widget.category.categoryColor
+              // });
             },
             icon: Icon(
               Icons.keyboard_arrow_right_outlined,

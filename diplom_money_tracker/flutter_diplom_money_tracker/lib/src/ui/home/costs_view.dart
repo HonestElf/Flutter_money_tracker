@@ -10,7 +10,9 @@ final List<CostCategory> categories = [
 
 class CostsView extends StatefulWidget {
   final List<CostCategory> categories;
-  const CostsView({super.key, required this.categories});
+  final Function navigateCallback;
+  const CostsView(
+      {super.key, required this.categories, required this.navigateCallback});
 
   @override
   State<CostsView> createState() => _CostsViewState();
@@ -24,8 +26,9 @@ class _CostsViewState extends State<CostsView> {
       separatorBuilder: (context, index) => const SizedBox(
         height: 25,
       ),
-      itemBuilder: (context, index) =>
-          CostCategoryCard(category: widget.categories[index]),
+      itemBuilder: (context, index) => CostCategoryCard(
+          category: widget.categories[index],
+          navigateCallback: widget.navigateCallback),
       padding: const EdgeInsets.all(25),
     );
   }

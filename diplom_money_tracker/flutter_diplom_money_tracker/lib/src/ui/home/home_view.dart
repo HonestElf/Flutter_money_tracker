@@ -89,8 +89,11 @@ class HomeViewBody extends StatelessWidget {
             if (args.containsKey('categoryName')) {
               return MaterialPageRoute(
                 builder: (_) => CategoryView(
-                    categoryName: args['categoryName'],
-                    categoryColor: args['categoryColor']),
+                  chosenMonth: args['chosenMonth'],
+                  chosenYear: args['chosenYear'],
+                  categoryName: args['categoryName'],
+                  categoryColor: args['categoryColor'],
+                ),
               );
             }
             return MaterialPageRoute(

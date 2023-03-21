@@ -13,10 +13,17 @@ final List<CostItem> items = [
 
 class CategoryView extends StatefulWidget {
   static const routeName = 'currentCategory';
-  const CategoryView(
-      {super.key, required this.categoryName, this.categoryColor});
+  const CategoryView({
+    super.key,
+    required this.categoryName,
+    required this.chosenMonth,
+    required this.chosenYear,
+    this.categoryColor,
+  });
   final String categoryName;
   final String? categoryColor;
+  final int chosenMonth;
+  final int chosenYear;
 
   @override
   State<CategoryView> createState() => _CategoryViewState();
@@ -55,7 +62,11 @@ class _CategoryViewState extends State<CategoryView> {
 
                 if (snapshot.hasData) {
                   var output = snapshot.data!.data();
-                  var itemsList = output!.items;
+                  var itemsList = output!.items.where((element) {
+                    final parsedDate = DateTime.parse(element.costDay);
+                    return parsedDate.month == widget.chosenMonth &&
+                        parsedDate.year == widget.chosenYear;
+                  }).toList();
                   return ListView.separated(
                     itemCount: itemsList.length,
                     separatorBuilder: (context, index) => const SizedBox(
