@@ -80,8 +80,11 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
           subtitle: Text('Всего: $costsSum'),
           trailing: IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(CategoryView.routeName,
-                  arguments: {'categoryName': widget.category.categoryName});
+              Navigator.of(context)
+                  .pushNamed(CategoryView.routeName, arguments: {
+                'categoryName': widget.category.categoryName,
+                'categoryColor': widget.category.categoryColor
+              });
             },
             icon: Icon(
               Icons.keyboard_arrow_right_outlined,

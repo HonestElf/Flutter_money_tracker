@@ -37,7 +37,10 @@ class _HomeViewState extends State<HomeView> {
       child: Scaffold(
         body: PageView(
           controller: _pageController,
-          children: const [HomeViewBody(), ProfileView()],
+          children: const [
+            HomeViewBody(),
+            ProfileView(),
+          ],
           onPageChanged: (index) {
             setState(() {
               _currentPageIndex = index;
@@ -65,7 +68,7 @@ class _HomeViewState extends State<HomeView> {
                   icon: Icon(
                     Icons.person,
                   ),
-                  label: 'Профиль')
+                  label: 'Профиль'),
             ]),
       ),
     );
@@ -85,8 +88,9 @@ class HomeViewBody extends StatelessWidget {
             final args = settings.arguments as Map<String, dynamic>;
             if (args.containsKey('categoryName')) {
               return MaterialPageRoute(
-                builder: (_) =>
-                    CategoryView(categoryName: args['categoryName']),
+                builder: (_) => CategoryView(
+                    categoryName: args['categoryName'],
+                    categoryColor: args['categoryColor']),
               );
             }
             return MaterialPageRoute(

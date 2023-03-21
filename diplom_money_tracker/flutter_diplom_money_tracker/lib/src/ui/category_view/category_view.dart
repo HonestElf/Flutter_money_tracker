@@ -4,6 +4,7 @@ import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/src/data/cost_item.dart';
 import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/category_view/cost_card.dart';
+import 'package:flutter_diplom_money_tracker/src/ui/utils/color_parser.dart';
 
 final List<CostItem> items = [
   CostItem(costPrice: 30, costDay: '30/12/2012'),
@@ -12,8 +13,10 @@ final List<CostItem> items = [
 
 class CategoryView extends StatefulWidget {
   static const routeName = 'currentCategory';
-  const CategoryView({super.key, required this.categoryName});
+  const CategoryView(
+      {super.key, required this.categoryName, this.categoryColor});
   final String categoryName;
+  final String? categoryColor;
 
   @override
   State<CategoryView> createState() => _CategoryViewState();
@@ -39,7 +42,10 @@ class _CategoryViewState extends State<CategoryView> {
       child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(widget.categoryName),
+            title: Text(
+              widget.categoryName,
+              style: TextStyle(color: getColorFromHex(widget.categoryColor)),
+            ),
             backgroundColor: const Color(0xFF9053EB),
           ),
           body: StreamBuilder<DocumentSnapshot<CostCategory>>(
