@@ -154,6 +154,51 @@ class _LoginViewState extends State<LoginView> {
                     style: TextStyle(fontSize: 17),
                   ),
           ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF9053EB),
+              minimumSize: const Size(100, 50),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+            ),
+            onPressed: _isLoading
+                ? null
+                : () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    try {
+                      await signInWithEmailAndPassword(
+                              'test2@test.com', 'testtest2')
+                          .then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              duration: Duration(milliseconds: 1000),
+                              backgroundColor: Colors.green,
+                              content: Text('Выполняется вход...')),
+                        );
+                      });
+                    } catch (error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            duration: const Duration(milliseconds: 1000),
+                            backgroundColor: Colors.red,
+                            content: Text(error.toString())),
+                      );
+                    }
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  },
+            child: _isLoading
+                ? const CircularProgressIndicator(
+                    color: Color(0xFF9053EB),
+                  )
+                : const Text(
+                    'DEV 2 Войти',
+                    style: TextStyle(fontSize: 17),
+                  ),
+          ),
         ],
       ),
     );
