@@ -19,12 +19,12 @@ class MonthView extends StatefulWidget {
 class _MonthViewState extends State<MonthView> {
   late CollectionReference<CostCategory>? _categories;
 
-  String? chosenMonth;
+  int? chosenMonth;
   @override
   void initState() {
     super.initState();
 
-    chosenMonth = parseMonth(DateTime.now().month);
+    chosenMonth = DateTime.now().month;
 
     _categories = getFirebaseCollection();
   }
@@ -48,7 +48,7 @@ class _MonthViewState extends State<MonthView> {
 
     if (chosenDate != null) {
       setState(() {
-        chosenMonth = parseMonth(chosenDate.month);
+        chosenMonth = chosenDate.month;
       });
     }
   }
@@ -63,7 +63,7 @@ class _MonthViewState extends State<MonthView> {
         title: TextButton(
             onPressed: openDateModal,
             child: Text(
-              chosenMonth ?? 'Месяц не выбран',
+              parseMonth(chosenMonth),
               style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -78,9 +78,18 @@ class _MonthViewState extends State<MonthView> {
         ],
       ),
       body: StreamBuilder<List<CostCategory>>(
-          stream: _categories
-              ?.snapshots()
-              .map((event) => event.docs.map((e) => e.data()).toList()),
+          stream: _categories?.snapshots().map((event) => event.docs.map((e) {
+                dynamic temp = e.data();
+
+                return CostCategory(
+                    categoryName: temp.categoryName,
+                    categoryColor: temp.categoryColor,
+                    items: temp.items
+                        .where((element) =>
+                            DateTime.parse(element.costDay).month ==
+                            chosenMonth)
+                        .toList());
+              }).toList()),
           builder: (context, snapshot) {
             return snapshot.hasData
                 ? Column(

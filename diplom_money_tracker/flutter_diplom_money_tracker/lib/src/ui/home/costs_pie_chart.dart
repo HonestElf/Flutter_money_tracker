@@ -12,10 +12,18 @@ class CostsPieChart extends StatefulWidget {
 }
 
 class _CostsPieChartState extends State<CostsPieChart> {
-  static const color = '#bfeb91';
   @override
   Widget build(BuildContext context) {
-    return widget.categories.isEmpty
+    bool isEmpty = true;
+    for (var element in widget.categories) {
+      if (element.items.isNotEmpty) {
+        isEmpty = false;
+        break;
+      } else {
+        isEmpty = true;
+      }
+    }
+    return isEmpty
         ? const Center(
             child: Text('Пока нет трат'),
           )
@@ -37,7 +45,7 @@ class _CostsPieChartState extends State<CostsPieChart> {
                     return PieChartSectionData(
                         value: costsSum,
                         radius: 70,
-                        color: getColorFromHex(color));
+                        color: getColorFromHex(category.categoryColor));
                   })
                 ])),
           );

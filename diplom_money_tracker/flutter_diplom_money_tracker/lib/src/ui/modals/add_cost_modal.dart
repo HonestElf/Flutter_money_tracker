@@ -26,7 +26,8 @@ class _AddCostModalState extends State<AddCostModal> {
 
     DateTime now = DateTime.now();
 
-    currentDate = '${now.day}/${now.month}/${now.year}';
+    currentDate =
+        '${now.year}-${now.month < 9 ? '0${now.month}' : now.month}-${now.day < 9 ? '0${now.day}' : now.day}';
   }
 
   void openDateModal() async {
@@ -39,7 +40,7 @@ class _AddCostModalState extends State<AddCostModal> {
     if (chosenDate != null) {
       setState(() {
         currentDate =
-            '${chosenDate.day}/${chosenDate.month}/${chosenDate.year}';
+            '${chosenDate.year}-${chosenDate.month < 9 ? '0${chosenDate.month}' : chosenDate.month}-${chosenDate.day < 9 ? '0${chosenDate.day}' : chosenDate.day}';
       });
     }
   }

@@ -24,18 +24,18 @@ CollectionReference<CostCategory>? getFirebaseCollection() {
   }
 }
 
-String addCategory(String name, String color) {
+void addCategory(String name, String color) {
   try {
     getFirebaseCollection()!
         .doc(name)
         .set(CostCategory(categoryName: name, categoryColor: color, items: []));
-    return 'Success';
   } catch (error) {
-    throw error.toString();
+    print('ADD CATEGORY ERROR: ${error.toString()}');
+    // throw error.toString();
   }
 }
 
-String addCost(String categoryName, num price, String date) {
+void addCost(String categoryName, num price, String date) {
   try {
     final document = getFirebaseCollection()!.doc(categoryName).withConverter(
           fromFirestore: (snapshot, options) =>
@@ -48,10 +48,9 @@ String addCost(String categoryName, num price, String date) {
         {'date': date, 'price': price}
       ])
     });
-
-    return 'Success';
   } catch (error) {
-    throw error.toString();
+    print('ADD COST ERROR: ${error.toString()}');
+    // throw error.toString();
   }
 }
 
@@ -69,17 +68,16 @@ void deleteCost(String categoryName, CostItem item) {
       ])
     });
   } catch (error) {
-    throw error.toString();
+    print('DELETE COST ERROR: ${error.toString()}');
+    // throw error.toString();
   }
 }
 
 void deleteCategory(String categoryName) {
   try {
-    FirebaseFirestore.instance
-        .collection('testUsercollection')
-        .doc(categoryName)
-        .delete();
+    getFirebaseCollection()!.doc(categoryName).delete();
   } catch (error) {
-    throw error.toString();
+    print('DELETE CATEGORY ERROR: ${error.toString()}');
+    // throw error.toString();
   }
 }
