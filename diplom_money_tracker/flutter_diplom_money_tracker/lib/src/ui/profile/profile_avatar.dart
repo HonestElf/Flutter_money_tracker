@@ -18,7 +18,10 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
   final storage = FirebaseStorage.instance;
   final ImagePicker _picker = ImagePicker();
 
+  XFile? _avatarFromGallery;
   String? _imageUrl;
+
+  bool _imageNotLoaded = false;
 
   @override
   void initState() {
@@ -30,12 +33,21 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
   void picImageFromGallery() async {
     final chosenImage = await _picker.pickImage(source: ImageSource.gallery);
 
+    setState(() {
+      _avatarFromGallery = chosenImage;
+      _imageNotLoaded = true;
+    });
+  }
+
+  void saveAvatarToFirebase() {
     final imgRef =
         storage.ref().child('avatars/${widget.currentUser.uid}_avatar');
+    if (_avatarFromGallery != null) {
+      imgRef.putFile(File(_avatarFromGallery!.path));
 
-    if (chosenImage != null) {
-      imgRef.putFile(File(chosenImage.path));
-      _loadUserAvatar();
+      setState(() {
+        _imageNotLoaded = false;
+      });
     }
   }
 
@@ -75,16 +87,26 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          picImageFromGallery();
-        },
-        child: CircleAvatar(
-          radius: 40,
-          backgroundImage: _imageUrl != null
-              ? NetworkImage(_imageUrl!)
-              : const AssetImage('assets/images/defaultAvatar.png')
-                  as ImageProvider,
-        ));
+    ImageProvider backgroundImage;
+    if (_avatarFromGallery != null) {
+      backgroundImage = FileImage(File(_avatarFromGallery!.path));
+    } else if (_imageUrl != null) {
+      backgroundImage = NetworkImage(_imageUrl!);
+    } else {
+      backgroundImage = const AssetImage('assets/images/defaultAvatar.png');
+    }
+    return Column(
+      children: [
+        GestureDetector(
+            onTap: () {
+              picImageFromGallery();
+            },
+            child: CircleAvatar(radius: 40, backgroundImage: backgroundImage)),
+        _imageNotLoaded
+            ? TextButton(
+                onPressed: saveAvatarToFirebase, child: const Text('Сохранить'))
+            : SizedBox()
+      ],
+    );
   }
 }
