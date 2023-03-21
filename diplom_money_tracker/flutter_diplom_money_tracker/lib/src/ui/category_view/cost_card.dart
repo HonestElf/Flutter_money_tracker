@@ -18,27 +18,42 @@ class CostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 25),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-              color: Colors.black.withOpacity(0.15),
-              blurRadius: 10,
-              spreadRadius: 1,
-              offset: const Offset(0, 5)),
-        ],
+    return Dismissible(
+      key: Key('${item.costDay}_${item.costPrice}'),
+      onDismissed: (direction) {
+        deleteCostItem();
+      },
+      background: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          color: Colors.red,
+        ),
+        child: const Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            'Удалить',
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          ),
+        ),
       ),
-      child: ListTile(
-        title: Text(item.costPrice.toString()),
-        subtitle: Text(item.costDay),
-        trailing: IconButton(
-            onPressed: () {
-              deleteCostItem();
-            },
-            icon: const Icon(Icons.delete)),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 25),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 10,
+                spreadRadius: 1,
+                offset: const Offset(0, 5)),
+          ],
+        ),
+        child: ListTile(
+          title: Text(item.costPrice.toString()),
+          subtitle: Text(item.costDay),
+        ),
       ),
     );
   }
