@@ -5,8 +5,8 @@ import 'package:flutter_diplom_money_tracker/firebase_options.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/app.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // runApp(const MyApp());
   runApp(const MyBlocApp());
 }

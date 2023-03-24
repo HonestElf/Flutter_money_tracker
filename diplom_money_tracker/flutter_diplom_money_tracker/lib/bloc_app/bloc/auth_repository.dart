@@ -1,29 +1,51 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 class AuthRepository {
-  Future<String> attemptAutoLogin() async {
-    await Future.delayed(Duration(seconds: 1));
+  Future<String?> _getuserId() async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
 
-    throw Exception('not signed in');
+      return userId;
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  Future<String> login(
-      {required String username, required String password}) async {
-    print('attempring logn');
+  Future<String?> attemptAutoLogin() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
 
-    await Future.delayed(const Duration(seconds: 3));
-
-    print('logged in');
-    return 'SomeUserName';
-    // throw Exception('bad connection');
+      return currentUser != null ? _getuserId() : null;
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  Future<void> signUp(
+  Future<String?> login(
       {required String username, required String password}) async {
-    await Future.delayed(const Duration(seconds: 3));
-    print('signed up');
+    try {
+      final result = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: username, password: password);
+
+      return result.user != null ? _getuserId() : null;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> signUp(
+      {required String username, required String password}) async {
+    try {
+      final result = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: username, password: password);
+
+      return result.user != null;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> signOut() async {
-    await Future.delayed(const Duration(seconds: 2));
-    print('signed out');
+    await FirebaseAuth.instance.signOut();
   }
 }
