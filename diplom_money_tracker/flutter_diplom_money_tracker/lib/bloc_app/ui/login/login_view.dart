@@ -6,6 +6,7 @@ import 'package:flutter_diplom_money_tracker/bloc_app/bloc/form_submission_statu
 import 'package:flutter_diplom_money_tracker/bloc_app/bloc/login/login_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/bloc/login/login_event.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/bloc/login/login_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/ui/login_body/login_body.dart';
 
 class LoginView extends StatelessWidget {
   LoginView({super.key});
@@ -24,6 +25,7 @@ class LoginView extends StatelessWidget {
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
+                // Align(alignment: Alignment.topCenter, child: const LoginBody()),
                 _loginForm(),
                 _showSignUpButton(context),
               ],
@@ -39,6 +41,12 @@ class LoginView extends StatelessWidget {
         if (formStatus is SubmissionFailed) {
           _showSnackBar(context, formStatus.exception.toString());
         }
+      },
+      listenWhen: (previous, current) {
+        if (previous.formStatus != current.formStatus) {
+          return true;
+        }
+        return false;
       },
       child: Form(
         key: _formKey,
