@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/auth_cubit.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/auth_repository.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/form_submission_status.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/login/login_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/login/login_event.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/login/login_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/auth_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/auth_repository.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/form_submission_status.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/login/login_bloc.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/login/login_event.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/login/login_state.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/login_body/login_body.dart';
 
 class LoginView extends StatelessWidget {
@@ -14,22 +14,34 @@ class LoginView extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: BlocProvider(
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+          child: BlocProvider(
             create: (context) => LoginBloc(
-                  authRepo: context.read<AuthRepository>(),
-                  authCubit: context.read<AuthCubit>(),
-                ),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                // Align(alignment: Alignment.topCenter, child: const LoginBody()),
-                _loginForm(),
-                _showSignUpButton(context),
-              ],
-            )),
+              authRepo: context.read<AuthRepository>(),
+              authCubit: context.read<AuthCubit>(),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const LoginBody(),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  _loginForm(),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  _showSignUpButton(context),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -52,10 +64,15 @@ class LoginView extends StatelessWidget {
         key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _usernameField(),
             _passwordField(),
+            const SizedBox(
+              height: 30,
+            ),
             _loginButton(),
+            _DEVloginButton(),
           ],
         ),
       ),
@@ -98,8 +115,10 @@ class LoginView extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return state.formStatus is FormSubmitting
-            ? const CircularProgressIndicator(
-                color: Color(0xFF9053EB),
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF9053EB),
+                ),
               )
             : ElevatedButton(
                 onPressed: () {
@@ -115,6 +134,42 @@ class LoginView extends StatelessWidget {
                 ),
                 child: const Text(
                   'Войти',
+                  style: TextStyle(fontSize: 17),
+                ),
+              );
+      },
+    );
+  }
+
+  Widget _DEVloginButton() {
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return state.formStatus is FormSubmitting
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF9053EB),
+                ),
+              )
+            : ElevatedButton(
+                onPressed: () {
+                  context
+                      .read<LoginBloc>()
+                      .add(LoginUsernameChanged(username: 'test@test.com'));
+                  context
+                      .read<LoginBloc>()
+                      .add(LoginPasswordChanged(password: 'testtest'));
+                  // if (_formKey.currentState!.validate()) {
+                  context.read<LoginBloc>().add(LoginSubmitted());
+                  // }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF9053EB),
+                  minimumSize: const Size(100, 50),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                ),
+                child: const Text(
+                  'Войти DEV',
                   style: TextStyle(fontSize: 17),
                 ),
               );

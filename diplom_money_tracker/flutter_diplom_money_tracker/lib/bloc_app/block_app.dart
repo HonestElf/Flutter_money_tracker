@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/app_navigator.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/auth_repository.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/data_repository.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/session_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/ui/navigators/app_navigator.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/auth_repository.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/data_repository.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/session_cubit.dart';
 
 class MyBlocApp extends StatelessWidget {
   const MyBlocApp({super.key});

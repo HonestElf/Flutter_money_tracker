@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/auth_cubit.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/auth_repository.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/form_submission_status.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/sign_up/sign_up_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/sign_up/sign_up_event.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/sign_up/sign_up_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/auth_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/auth_repository.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/form_submission_status.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/sign_up/sign_up_bloc.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/sign_up/sign_up_event.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/sign_up/sign_up_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/ui/login_body/login_body.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({super.key});
@@ -13,21 +14,34 @@ class SignUpView extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: BlocProvider(
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+          child: BlocProvider(
             create: (context) => SignUpBloc(
-                  authRepo: context.read<AuthRepository>(),
-                  authCubit: context.read<AuthCubit>(),
-                ),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                _signUpForm(),
-                _showLoginButton(context),
-              ],
-            )),
+              authRepo: context.read<AuthRepository>(),
+              authCubit: context.read<AuthCubit>(),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const LoginBody(),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  _signUpForm(),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  _showLoginButton(context),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -44,9 +58,13 @@ class SignUpView extends StatelessWidget {
         key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _usernameField(),
             _passwordField(),
+            const SizedBox(
+              height: 30,
+            ),
             _signUpButton(),
           ],
         ),
@@ -90,8 +108,10 @@ class SignUpView extends StatelessWidget {
     return BlocBuilder<SignUpBloc, SignUpState>(
       builder: (context, state) {
         return state.formStatus is FormSubmitting
-            ? const CircularProgressIndicator(
-                color: Color(0xFF9053EB),
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF9053EB),
+                ),
               )
             : ElevatedButton(
                 onPressed: () {
@@ -106,7 +126,7 @@ class SignUpView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15)),
                 ),
                 child: const Text(
-                  'Войти',
+                  'Регистрация',
                   style: TextStyle(fontSize: 17),
                 ),
               );

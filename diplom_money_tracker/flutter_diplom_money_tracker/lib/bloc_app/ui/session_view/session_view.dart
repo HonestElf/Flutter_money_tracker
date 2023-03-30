@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/session_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/session_cubit.dart';
 
 class SessionView extends StatelessWidget {
   const SessionView({super.key, required this.username});

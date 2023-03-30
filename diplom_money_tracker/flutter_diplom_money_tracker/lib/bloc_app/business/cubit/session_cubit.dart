@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/auth_credentials.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/auth_repository.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/data_repository.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/session_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/auth_credentials.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/auth_repository.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/data_repository.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/session_state.dart';
 
 class SessionCubit extends Cubit<SessionState> {
   final AuthRepository authRepo;

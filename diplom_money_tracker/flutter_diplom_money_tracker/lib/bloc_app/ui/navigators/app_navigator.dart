@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/auth_cubit.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/auth_navigator.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/session_cubit.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/session_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/auth_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/ui/navigators/auth_navigator.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/session_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/session_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/ui/view_router/view_router.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/loading_view/loading_view.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/ui/session_view/session_view.dart';
 
 class AppNavigator extends StatelessWidget {
   const AppNavigator({super.key});
@@ -31,11 +31,7 @@ class AppNavigator extends StatelessWidget {
               ),
 
             //show session
-            if (state is Authenticated)
-              MaterialPage(
-                  child: SessionView(
-                username: state.user.email!,
-              ))
+            if (state is Authenticated) const MaterialPage(child: ViewRouter())
           ],
           onPopPage: (route, result) => route.didPop(result),
         );

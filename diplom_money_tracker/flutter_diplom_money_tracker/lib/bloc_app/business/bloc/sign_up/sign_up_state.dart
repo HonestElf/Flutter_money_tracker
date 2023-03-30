@@ -1,4 +1,4 @@
-import 'package:flutter_diplom_money_tracker/bloc_app/bloc/form_submission_status.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/form_submission_status.dart';
 
 class SignUpState {
   final String username;
