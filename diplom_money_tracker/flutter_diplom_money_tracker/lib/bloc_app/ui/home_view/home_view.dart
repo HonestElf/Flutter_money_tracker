@@ -17,9 +17,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(
-        title: Text('Home view'),
-      ),
+      appBar: _appBar(),
       body: Column(
         children: [
           Expanded(
@@ -33,6 +31,15 @@ class HomeView extends StatelessWidget {
         ],
       ),
     ));
+  }
+
+  PreferredSize _appBar() {
+    final appBarheight = AppBar().preferredSize.height;
+
+    return PreferredSize(
+      preferredSize: Size.fromHeight(appBarheight),
+      child: AppBar(centerTitle: true, title: Text('Home view')),
+    );
   }
 
   Widget _costsPieChart() {
