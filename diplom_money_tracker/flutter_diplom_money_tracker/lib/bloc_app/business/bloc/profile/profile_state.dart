@@ -9,16 +9,27 @@ class ProfileState {
 
   final FormSubmissionStatus formStatus;
 
-  ProfileState(
-      {required this.user,
-      this.avatarPath,
-      this.formStatus = const InitialFormStatus()});
+  bool imageSourceActionSheetIsVisible;
 
-  ProfileState copyWith(
-      {User? user, String? avatarPath, FormSubmissionStatus? formStatus}) {
+  ProfileState({
+    required this.user,
+    this.avatarPath,
+    this.formStatus = const InitialFormStatus(),
+    this.imageSourceActionSheetIsVisible = false,
+  });
+
+  ProfileState copyWith({
+    User? user,
+    String? avatarPath,
+    FormSubmissionStatus? formStatus,
+    bool? imageSourceActionSheetIsVisible,
+  }) {
     return ProfileState(
-        user: user ?? this.user,
-        avatarPath: avatarPath ?? this.avatarPath,
-        formStatus: formStatus ?? this.formStatus);
+      user: user ?? this.user,
+      avatarPath: avatarPath ?? this.avatarPath,
+      formStatus: formStatus ?? this.formStatus,
+      imageSourceActionSheetIsVisible: imageSourceActionSheetIsVisible ??
+          this.imageSourceActionSheetIsVisible,
+    );
   }
 }

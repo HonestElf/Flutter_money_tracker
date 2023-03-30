@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/profile/profile_bloc.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/profile/profile_events.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/profile/profile_state.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/session_cubit.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/form_submission_status.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -15,9 +19,16 @@ class ProfileView extends StatelessWidget {
     return SafeArea(
         child: BlocProvider(
       create: (context) => ProfileBloc(user: sessionCubit.currentUser),
-      child: Scaffold(
-        appBar: _appBar(),
-        body: _userProfile(),
+      child: BlocListener<ProfileBloc, ProfileState>(
+        listener: (context, state) {
+          if (state.imageSourceActionSheetIsVisible) {
+            _showImageSourceActionSheet(context);
+          }
+        },
+        child: Scaffold(
+          appBar: _appBar(),
+          body: _userProfile(),
+        ),
       ),
     ));
   }
@@ -81,9 +92,16 @@ class ProfileView extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            const CircleAvatar(
-              radius: 40,
-              child: Icon(Icons.person),
+            GestureDetector(
+              onTap: () {
+                context.read<ProfileBloc>().add(ChangeAvatarRequest());
+              },
+              child: CircleAvatar(
+                radius: 40,
+                backgroundImage: state.avatarPath != null
+                    ? FileImage(File(state.avatarPath!)) as ImageProvider
+                    : const AssetImage('assets/images/defaultAvatar.png'),
+              ),
             ),
             if (state.formStatus is FormSubmitting) _changeAvatarButton()
           ],
@@ -94,5 +112,37 @@ class ProfileView extends StatelessWidget {
 
   Widget _changeAvatarButton() {
     return TextButton(onPressed: () {}, child: const Text('Сохранить'));
+  }
+
+  void _showImageSourceActionSheet(BuildContext context) {
+    void selectImageSource(ImageSource imageSource) {
+      context
+          .read<ProfileBloc>()
+          .add(OpenImagePicker(imageSource: imageSource));
+    }
+
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      context: context,
+      builder: (context) => Wrap(children: [
+        ListTile(
+          leading: const Icon(Icons.camera_alt),
+          title: const Text('Камера'),
+          onTap: () {
+            Navigator.pop(context);
+            selectImageSource(ImageSource.camera);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.photo),
+          title: const Text('Галерея'),
+          onTap: () {
+            Navigator.pop(context);
+            selectImageSource(ImageSource.gallery);
+          },
+        )
+      ]),
+    );
   }
 }
