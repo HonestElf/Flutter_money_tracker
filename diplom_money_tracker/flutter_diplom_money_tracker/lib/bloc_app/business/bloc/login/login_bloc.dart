@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/auth_credentials.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/auth_cubit.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/data/auth_repository.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/repositories/auth_repository.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/form_submission_status.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/login/login_event.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/login/login_state.dart';

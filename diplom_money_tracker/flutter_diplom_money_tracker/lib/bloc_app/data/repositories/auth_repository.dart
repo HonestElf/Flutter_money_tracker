@@ -1,6 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
+  Future<User?> getCurrentUser() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      return user;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<String?> _getuserId() async {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
