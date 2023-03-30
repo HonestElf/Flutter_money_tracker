@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/profile/profile_bloc.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/profile/profile_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/session_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/form_submission_status.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -6,40 +11,54 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sessionCubit = context.read<SessionCubit>();
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Профиль'),
+        child: BlocProvider(
+      create: (context) => ProfileBloc(user: sessionCubit.currentUser),
+      child: Scaffold(
+        appBar: _appBar(),
+        body: _userProfile(),
       ),
-      body: _userProfile(),
     ));
   }
 
+  PreferredSize _appBar() {
+    final appBarheight = AppBar().preferredSize.height;
+
+    return PreferredSize(
+      preferredSize: Size.fromHeight(appBarheight),
+      child: AppBar(centerTitle: true, title: const Text('Профиль')),
+    );
+  }
+
   Widget _userProfile() {
-    return Padding(
-      padding: const EdgeInsets.all(25),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _userAvatar(),
-          const SizedBox(
-            width: 20,
-          ),
-          Column(
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(25),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'email',
-                style: const TextStyle(fontSize: 17),
-              ),
+              _userAvatar(),
               const SizedBox(
-                height: 15,
+                width: 20,
               ),
-              _logoutButton(),
+              Column(
+                children: [
+                  Text(
+                    state.email,
+                    style: const TextStyle(fontSize: 17),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  _logoutButton(),
+                ],
+              )
             ],
-          )
-        ],
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -58,9 +77,22 @@ class ProfileView extends StatelessWidget {
   }
 
   Widget _userAvatar() {
-    return CircleAvatar(
-      radius: 40,
-      child: Icon(Icons.person),
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            const CircleAvatar(
+              radius: 40,
+              child: Icon(Icons.person),
+            ),
+            if (state.formStatus is FormSubmitting) _changeAvatarButton()
+          ],
+        );
+      },
     );
+  }
+
+  Widget _changeAvatarButton() {
+    return TextButton(onPressed: () {}, child: const Text('Сохранить'));
   }
 }
