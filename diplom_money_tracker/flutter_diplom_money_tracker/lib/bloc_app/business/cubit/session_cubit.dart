@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/auth_credentials.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/repositories/auth_repository.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/data/session_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/session_state.dart';
 
 class SessionCubit extends Cubit<SessionState> {
   final AuthRepository authRepo;
+
+  User get currentUser => (state as Authenticated).user;
 
   SessionCubit({
     required this.authRepo,
@@ -26,7 +29,6 @@ class SessionCubit extends Cubit<SessionState> {
     }
   }
 
-  // void showAuth() => emit(Unauthenticated());
   void showSession(AuthCredentials credentials) async {
     try {
       final user = await authRepo.getCurrentUser();
