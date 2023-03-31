@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_bloc,.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/repositories/database_repository.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/details_view/details_view.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/home_view/home_view.dart';

@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_bloc,.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_events.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_state.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/category_add_cubit.dart';
@@ -101,7 +101,7 @@ class HomeView extends StatelessWidget {
             height: 25,
           ),
           itemBuilder: (context, index) => CostCategoryCard(
-            category: categories[index],
+            category: state.costCategories[index],
           ),
           padding: const EdgeInsets.all(25),
         );

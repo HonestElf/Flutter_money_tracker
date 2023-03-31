@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_bloc,.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_events.dart';
 
 enum ModalSate { opened, closed }

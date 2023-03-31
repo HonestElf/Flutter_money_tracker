@@ -6,6 +6,20 @@ class DatabaseRepository {
   late CollectionReference<CostCategory> _collection;
   final String userId;
 
+  Stream<List<CostCategory>> _getStream() {
+    return _collection.snapshots().map((event) => event.docs
+        .map((doc) => CostCategory(
+            categoryName: doc.data().categoryName,
+            categoryColor: doc.data().categoryColor,
+            items: doc.data().items))
+        .toList());
+  }
+
+  Stream<List<CostCategory>> get data => _getStream();
+
+  late final Stream<List<CostCategory>> stream =
+      _getStream().asBroadcastStream();
+
   DatabaseRepository({required this.userId}) {
     _collection = FirebaseFirestore.instance.collection(userId).withConverter(
           fromFirestore: (snapshot, options) =>

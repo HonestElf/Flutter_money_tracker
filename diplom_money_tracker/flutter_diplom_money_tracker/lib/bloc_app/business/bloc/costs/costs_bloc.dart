@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_events.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_state.dart';
@@ -6,12 +8,17 @@ import 'package:flutter_diplom_money_tracker/bloc_app/data/repositories/database
 
 class CostsBloc extends Bloc<CostsEvent, CostsState> {
   final DatabaseRepository dataRepo;
+
+  late final StreamSubscription<List<CostCategory>> dataStream;
   CostsBloc({required this.dataRepo}) : super(CostsState()) {
     on<CostsEvent>(_onEvent);
 
     final categories = dataRepo.getAllCategories();
 
-    add(LoadAllCategories(categories: categories));
+    dataStream = dataRepo.stream.listen((event) {
+      print('EVENT: ${event}');
+      add(LoadAllCategories(categories: event));
+    });
   }
 
   Future<void> _onEvent(CostsEvent event, Emitter<CostsState> emit) async {
@@ -40,5 +47,11 @@ class CostsBloc extends Bloc<CostsEvent, CostsState> {
     //else if (event is AddNewCost) {
     // } else if (event is DeleteCategory) {
     // } else if (event is DeleteCost) {}
+  }
+
+  @override
+  Future<void> close() {
+    dataStream.cancel();
+    return super.close();
   }
 }

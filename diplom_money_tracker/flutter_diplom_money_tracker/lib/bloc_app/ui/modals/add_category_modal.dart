@@ -1,12 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_bloc,.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_events.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_state.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/category_add_cubit.dart';
-import 'package:flutter_diplom_money_tracker/src/data/cost_category.dart';
-import 'package:flutter_diplom_money_tracker/src/data/firestore_api.dart';
 
 class AddCategoryModal extends StatefulWidget {
   const AddCategoryModal({super.key});
@@ -26,28 +20,6 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
 
     super.dispose();
   }
-
-  // void addItem() {
-  //   if (_nameController.text != '' && _colorController.text != '') {
-  //     try {
-  //       addCategory(_nameController.text, _colorController.text);
-
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(
-  //             duration: Duration(milliseconds: 1000),
-  //             backgroundColor: Colors.green,
-  //             content: Text('Добавляем...')),
-  //       );
-  //     } catch (e) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //             duration: const Duration(milliseconds: 1000),
-  //             backgroundColor: Colors.red,
-  //             content: Text(e.toString())),
-  //       );
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
