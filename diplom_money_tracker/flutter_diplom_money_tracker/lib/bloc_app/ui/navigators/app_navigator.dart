@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/auth_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/repositories/database_repository.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/navigators/auth_navigator.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/session_cubit.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/session_state.dart';
@@ -31,7 +32,12 @@ class AppNavigator extends StatelessWidget {
               ),
 
             //show session
-            if (state is Authenticated) const MaterialPage(child: ViewRouter())
+            if (state is Authenticated)
+              MaterialPage(
+                  child: RepositoryProvider(
+                      create: (context) => DatabaseRepository(
+                          userId: context.read<SessionCubit>().currentUser.uid),
+                      child: const ViewRouter()))
           ],
           onPopPage: (route, result) => route.didPop(result),
         );

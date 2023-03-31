@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_bloc,.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/repositories/database_repository.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/details_view/details_view.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/home_view/home_view.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/not_found_view/not_found_view.dart';
@@ -82,37 +85,41 @@ class ViewRouterBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      initialRoute: HomeView.routeName,
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case HomeView.routeName:
-            return MaterialPageRoute(
-              builder: (_) => const HomeView(),
-            );
-
-          case DetailsView.routeName:
-            final args = settings.arguments as Map<String, dynamic>;
-            if (args.containsKey('categoryName')) {
+    return BlocProvider(
+      create: (context) =>
+          CostsBloc(dataRepo: context.read<DatabaseRepository>()),
+      child: Navigator(
+        initialRoute: HomeView.routeName,
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case HomeView.routeName:
               return MaterialPageRoute(
-                builder: (_) => const DetailsView(
-                    // chosenMonth: args['chosenMonth'],
-                    // chosenYear: args['chosenYear'],
-                    // categoryName: args['categoryName'],
-                    // categoryColor: args['categoryColor'],
-                    ),
+                builder: (_) => const HomeView(),
               );
-            }
-            return MaterialPageRoute(
-              builder: (_) => const NotFoundView(),
-            );
 
-          default:
-            return MaterialPageRoute(
-              builder: (_) => const NotFoundView(),
-            );
-        }
-      },
+            case DetailsView.routeName:
+              final args = settings.arguments as Map<String, dynamic>;
+              if (args.containsKey('categoryName')) {
+                return MaterialPageRoute(
+                  builder: (_) => const DetailsView(
+                      // chosenMonth: args['chosenMonth'],
+                      // chosenYear: args['chosenYear'],
+                      // categoryName: args['categoryName'],
+                      // categoryColor: args['categoryColor'],
+                      ),
+                );
+              }
+              return MaterialPageRoute(
+                builder: (_) => const NotFoundView(),
+              );
+
+            default:
+              return MaterialPageRoute(
+                builder: (_) => const NotFoundView(),
+              );
+          }
+        },
+      ),
     );
   }
 }

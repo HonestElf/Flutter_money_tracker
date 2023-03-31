@@ -1,0 +1,79 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/entities/cost_category.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/entities/cost_item.dart';
+
+class DatabaseRepository {
+  late CollectionReference<CostCategory> _collection;
+  final String userId;
+
+  DatabaseRepository({required this.userId}) {
+    _collection = FirebaseFirestore.instance.collection(userId).withConverter(
+          fromFirestore: (snapshot, options) =>
+              CostCategory.fromJson(snapshot.data()!),
+          toFirestore: (value, options) => value.toJson(),
+        );
+  }
+
+  List<CostCategory> getAllCategories() {
+    final List<CostCategory> categoriesList = [];
+    _collection.snapshots().map((event) {
+      for (var element in event.docs) {
+        categoriesList.add(element.data());
+      }
+    });
+
+    return categoriesList;
+  }
+
+  Future<void> addNewCategory(String name, String color) async {
+    try {
+      await _collection.doc(name).set(
+          CostCategory(categoryName: name, categoryColor: color, items: []));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // void addNewCost(String categoryName, num price, String date) {
+  //   try {
+  //     final document = collection.doc(categoryName).withConverter(
+  //           fromFirestore: (snapshot, options) =>
+  //               CostCategory.fromJson(snapshot.data()!),
+  //           toFirestore: (value, options) => value.toJson(),
+  //         );
+  //     document.update({
+  //       'costs': FieldValue.arrayUnion([
+  //         {'date': date, 'price': price}
+  //       ])
+  //     });
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
+
+  // void deleteCategory(String categoryName) {
+  //   try {
+  //     collection.doc(categoryName).delete();
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
+
+  // void deleteCost(String categoryName, CostItem item) {
+  //   try {
+  //     final document = collection.doc(categoryName).withConverter(
+  //           fromFirestore: (snapshot, options) =>
+  //               CostItem.fromJson(snapshot.data()!),
+  //           toFirestore: (value, options) => value.toJson(),
+  //         );
+
+  //     document.update({
+  //       'costs': FieldValue.arrayRemove([
+  //         {'date': item.costDay, 'price': item.costPrice}
+  //       ])
+  //     });
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
+}
