@@ -1,7 +1,13 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_bloc,.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_events.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/category_add_cubit.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/entities/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/cost_category_card/cost_category_card.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/ui/modals/add_category_modal.dart';
 
 final List<CostCategory> categories = [
   CostCategory(categoryName: 'Cat', categoryColor: 'F2B846'),
@@ -16,19 +22,33 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      appBar: _appBar(),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 3,
-            child: _costsPieChart(),
-          ),
-          Expanded(
-            flex: 5,
-            child: _costsCategories(),
-          ),
-        ],
+        child: BlocListener<CostsBloc, CostsState>(
+      listener: (context, state) {
+        if (state.addCategoryWindowIsVisible) {
+          var costsBloc = context.read<CostsBloc>();
+
+          showDialog(
+            context: context,
+            builder: (_) => BlocProvider(
+                create: (_) => CategoryAddCubit(costsBloc: costsBloc),
+                child: const AddCategoryModal()),
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: _appBar(),
+        body: Column(
+          children: [
+            Expanded(
+              flex: 3,
+              child: _costsPieChart(),
+            ),
+            Expanded(
+              flex: 5,
+              child: _costsCategories(),
+            ),
+          ],
+        ),
       ),
     ));
   }
@@ -38,7 +58,21 @@ class HomeView extends StatelessWidget {
 
     return PreferredSize(
       preferredSize: Size.fromHeight(appBarheight),
-      child: AppBar(centerTitle: true, title: const Text('Home view')),
+      child: BlocBuilder<CostsBloc, CostsState>(
+        builder: (context, state) {
+          return AppBar(
+            centerTitle: true,
+            title: Text(state.monthName),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    context.read<CostsBloc>().add(OpenAddModal());
+                  },
+                  icon: const Icon(Icons.add))
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -59,15 +93,19 @@ class HomeView extends StatelessWidget {
   }
 
   Widget _costsCategories() {
-    return ListView.separated(
-      itemCount: categories.length,
-      separatorBuilder: (context, index) => const SizedBox(
-        height: 25,
-      ),
-      itemBuilder: (context, index) => CostCategoryCard(
-        category: categories[index],
-      ),
-      padding: const EdgeInsets.all(25),
+    return BlocBuilder<CostsBloc, CostsState>(
+      builder: (context, state) {
+        return ListView.separated(
+          itemCount: state.costCategories.length,
+          separatorBuilder: (context, index) => const SizedBox(
+            height: 25,
+          ),
+          itemBuilder: (context, index) => CostCategoryCard(
+            category: categories[index],
+          ),
+          padding: const EdgeInsets.all(25),
+        );
+      },
     );
   }
 }
