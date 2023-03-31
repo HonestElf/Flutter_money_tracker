@@ -138,7 +138,7 @@ class SignUpView extends StatelessWidget {
     return SafeArea(
         child: TextButton(
       onPressed: () => context.read<AuthCubit>().showLogin(),
-      child: Text('Already have an account? Sign in.'),
+      child: const Text('Already have an account? Sign in.'),
     ));
   }
 

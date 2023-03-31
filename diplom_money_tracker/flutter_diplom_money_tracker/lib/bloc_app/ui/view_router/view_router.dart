@@ -95,7 +95,7 @@ class ViewRouterBody extends StatelessWidget {
             final args = settings.arguments as Map<String, dynamic>;
             if (args.containsKey('categoryName')) {
               return MaterialPageRoute(
-                builder: (_) => DetailsView(
+                builder: (_) => const DetailsView(
                     // chosenMonth: args['chosenMonth'],
                     // chosenYear: args['chosenYear'],
                     // categoryName: args['categoryName'],

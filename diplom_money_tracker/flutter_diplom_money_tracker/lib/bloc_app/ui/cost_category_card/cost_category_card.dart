@@ -88,7 +88,7 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
               //   'categoryColor': widget.category.categoryColor
               // });
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.keyboard_arrow_right_outlined,
               // color: getColorFromHex(widget.category.categoryColor),
 

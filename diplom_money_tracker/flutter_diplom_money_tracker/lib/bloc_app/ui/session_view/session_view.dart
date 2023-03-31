@@ -17,7 +17,7 @@ class SessionView extends StatelessWidget {
             Text('Hello $username'),
             TextButton(
               onPressed: () => BlocProvider.of<SessionCubit>(context).signOut(),
-              child: Text('Sign out'),
+              child: const Text('Sign out'),
             )
           ],
         ),

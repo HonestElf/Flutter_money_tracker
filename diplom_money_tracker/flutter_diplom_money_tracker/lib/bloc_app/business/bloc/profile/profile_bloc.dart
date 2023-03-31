@@ -1,13 +1,24 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/profile/profile_events.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/profile/profile_state.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/form_submission_status.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/repositories/storage_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ImagePicker _picker = ImagePicker();
-  ProfileBloc({required User user}) : super(ProfileState(user: user)) {
+  final StorageRepository storageRepo;
+
+  ProfileBloc({required User user, required this.storageRepo})
+      : super(ProfileState(user: user)) {
     on<ProfileEvent>(_onEvent);
+
+    storageRepo
+        .getUserAvatarUrl(user.uid)
+        .then((url) => add(ProvideImagePath(avatarPath: url)));
   }
 
   Future<void> _onEvent(ProfileEvent event, Emitter<ProfileState> emit) async {
@@ -21,9 +32,25 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         return;
       }
 
-      emit(state.copyWith(avatarPath: pickedImage.path));
+      emit(state.copyWith(
+          localAvatarPath: pickedImage.path, formStatus: FormSubmitting()));
     } else if (event is ProvideImagePath) {
       emit(state.copyWith(avatarPath: event.avatarPath));
-    } else if (event is SaveProfileChanges) {}
+    } else if (event is SaveProfileChanges) {
+    } else if (event is SaveUserAvatar) {
+      try {
+        if (state.localAvatarPath != null) {
+          await storageRepo.uploadFile(
+              File(state.localAvatarPath!), state.user.uid);
+          emit(state.copyWith(formStatus: SubmissionSuccess()));
+          final avatarUrl = await storageRepo.getUserAvatarUrl(state.user.uid);
+          add(ProvideImagePath(avatarPath: avatarUrl));
+        }
+      } catch (e) {
+        emit(state.copyWith(
+            formStatus: SubmissionFailed('Ошибка загрузки изображения')));
+        rethrow;
+      }
+    }
   }
 }

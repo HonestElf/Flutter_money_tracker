@@ -3,17 +3,19 @@ import 'package:flutter_diplom_money_tracker/bloc_app/data/form_submission_statu
 
 class ProfileState {
   final User user;
+  final String? localAvatarPath;
   final String? avatarPath;
-
-  String get email => user.email ?? '';
 
   final FormSubmissionStatus formStatus;
 
   bool imageSourceActionSheetIsVisible;
 
+  String get email => user.email ?? '';
+
   ProfileState({
     required this.user,
     this.avatarPath,
+    this.localAvatarPath,
     this.formStatus = const InitialFormStatus(),
     this.imageSourceActionSheetIsVisible = false,
   });
@@ -21,12 +23,14 @@ class ProfileState {
   ProfileState copyWith({
     User? user,
     String? avatarPath,
+    String? localAvatarPath,
     FormSubmissionStatus? formStatus,
     bool? imageSourceActionSheetIsVisible,
   }) {
     return ProfileState(
       user: user ?? this.user,
       avatarPath: avatarPath ?? this.avatarPath,
+      localAvatarPath: localAvatarPath ?? this.localAvatarPath,
       formStatus: formStatus ?? this.formStatus,
       imageSourceActionSheetIsVisible: imageSourceActionSheetIsVisible ??
           this.imageSourceActionSheetIsVisible,

@@ -7,6 +7,7 @@ import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/profile/prof
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/profile/profile_state.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/session_cubit.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/form_submission_status.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/data/repositories/storage_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileView extends StatelessWidget {
@@ -18,7 +19,9 @@ class ProfileView extends StatelessWidget {
     final sessionCubit = context.read<SessionCubit>();
     return SafeArea(
         child: BlocProvider(
-      create: (context) => ProfileBloc(user: sessionCubit.currentUser),
+      create: (context) => ProfileBloc(
+          user: sessionCubit.currentUser,
+          storageRepo: context.read<StorageRepository>()),
       child: BlocListener<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state.imageSourceActionSheetIsVisible) {
@@ -98,9 +101,11 @@ class ProfileView extends StatelessWidget {
               },
               child: CircleAvatar(
                 radius: 40,
-                backgroundImage: state.avatarPath != null
-                    ? FileImage(File(state.avatarPath!)) as ImageProvider
-                    : const AssetImage('assets/images/defaultAvatar.png'),
+                backgroundImage: state.localAvatarPath != null
+                    ? FileImage(File(state.localAvatarPath!))
+                    : state.avatarPath != null
+                        ? NetworkImage(state.avatarPath!) as ImageProvider
+                        : const AssetImage('assets/images/defaultAvatar.png'),
               ),
             ),
             if (state.formStatus is FormSubmitting) _changeAvatarButton()
@@ -111,7 +116,12 @@ class ProfileView extends StatelessWidget {
   }
 
   Widget _changeAvatarButton() {
-    return TextButton(onPressed: () {}, child: const Text('Сохранить'));
+    return BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) => TextButton(
+            onPressed: () {
+              context.read<ProfileBloc>().add(SaveUserAvatar());
+            },
+            child: const Text('Сохранить')));
   }
 
   void _showImageSourceActionSheet(BuildContext context) {

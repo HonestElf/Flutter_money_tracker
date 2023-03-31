@@ -38,7 +38,7 @@ class HomeView extends StatelessWidget {
 
     return PreferredSize(
       preferredSize: Size.fromHeight(appBarheight),
-      child: AppBar(centerTitle: true, title: Text('Home view')),
+      child: AppBar(centerTitle: true, title: const Text('Home view')),
     );
   }
 

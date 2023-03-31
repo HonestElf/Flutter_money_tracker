@@ -24,7 +24,7 @@ class SessionCubit extends Cubit<SessionState> {
       } else {
         emit(Unauthenticated());
       }
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       emit(Unauthenticated());
     }
   }
@@ -37,7 +37,7 @@ class SessionCubit extends Cubit<SessionState> {
       } else {
         emit(Unauthenticated());
       }
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       emit(Unauthenticated());
     }
   }

@@ -72,7 +72,7 @@ class LoginView extends StatelessWidget {
               height: 30,
             ),
             _loginButton(),
-            _DEVloginButton(),
+            _devLoginButton(),
           ],
         ),
       ),
@@ -141,7 +141,7 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Widget _DEVloginButton() {
+  Widget _devLoginButton() {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return state.formStatus is FormSubmitting

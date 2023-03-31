@@ -17,3 +17,5 @@ class ProvideImagePath extends ProfileEvent {
 }
 
 class SaveProfileChanges extends ProfileEvent {}
+
+class SaveUserAvatar extends ProfileEvent {}
