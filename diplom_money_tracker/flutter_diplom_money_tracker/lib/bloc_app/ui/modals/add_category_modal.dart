@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/category_add_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/add_cubit.dart';
 
 class AddCategoryModal extends StatefulWidget {
   const AddCategoryModal({super.key});
@@ -26,7 +26,7 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       contentPadding: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
-      content: BlocBuilder<CategoryAddCubit, ModalSate>(
+      content: BlocBuilder<AddCubit, ModalSate>(
         builder: (context, state) {
           return _addCategoryModalBody();
         },
@@ -92,7 +92,7 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
   }
 
   Widget _submitButton() {
-    return BlocBuilder<CategoryAddCubit, ModalSate>(
+    return BlocBuilder<AddCubit, ModalSate>(
       builder: (context, state) {
         return ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -104,7 +104,7 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
             onPressed: () {
               if (_nameController.text != '' && _colorController.text != '') {
                 Navigator.of(context).pop();
-                context.read<CategoryAddCubit>().addNewCategory(
+                context.read<AddCubit>().addNewCategory(
                     _nameController.text, _colorController.text);
               }
             },
@@ -114,7 +114,7 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
   }
 
   Widget _cancelButton() {
-    return BlocBuilder<CategoryAddCubit, ModalSate>(
+    return BlocBuilder<AddCubit, ModalSate>(
       builder: (context, state) {
         return ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -127,7 +127,7 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              context.read<CategoryAddCubit>().closeModal();
+              context.read<AddCubit>().closeCategoryModal();
             },
             child: const Text('Отмена',
                 style: TextStyle(fontSize: 17, color: Colors.red)));

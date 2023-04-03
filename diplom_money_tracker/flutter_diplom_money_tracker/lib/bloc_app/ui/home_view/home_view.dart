@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_bloc.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_events.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_state.dart';
-import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/category_add_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/add_cubit.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/entities/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/cost_category_card/cost_category_card.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/modals/add_category_modal.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/ui/modals/add_cost_modal.dart';
 
 final List<CostCategory> categories = [
   CostCategory(categoryName: 'Cat', categoryColor: 'F2B846'),
@@ -30,8 +31,20 @@ class HomeView extends StatelessWidget {
           showDialog(
             context: context,
             builder: (_) => BlocProvider(
-                create: (_) => CategoryAddCubit(costsBloc: costsBloc),
+                create: (_) => AddCubit(costsBloc: costsBloc),
                 child: const AddCategoryModal()),
+          );
+        } else if (state.addCostWindowIsVisible) {
+          var costsBloc = context.read<CostsBloc>();
+          final categoryName = state.currentEditingCategory;
+
+          showDialog(
+            context: context,
+            builder: (_) => BlocProvider(
+                create: (_) => AddCubit(costsBloc: costsBloc),
+                child: AddCostModal(
+                  currentEditingCategory: categoryName!,
+                )),
           );
         }
       },
@@ -66,7 +79,7 @@ class HomeView extends StatelessWidget {
             actions: [
               IconButton(
                   onPressed: () {
-                    context.read<CostsBloc>().add(OpenAddModal());
+                    context.read<CostsBloc>().add(OpenAddCategoryModal());
                   },
                   icon: const Icon(Icons.add))
             ],
@@ -100,8 +113,15 @@ class HomeView extends StatelessWidget {
           separatorBuilder: (context, index) => const SizedBox(
             height: 25,
           ),
-          itemBuilder: (context, index) => CostCategoryCard(
-            category: state.costCategories[index],
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () {
+              context.read<CostsBloc>().add(SetCurrentEditingCategory(
+                  categoryName: state.costCategories[index].categoryName));
+              context.read<CostsBloc>().add(OpenAddCostModal());
+            },
+            child: CostCategoryCard(
+              category: state.costCategories[index],
+            ),
           ),
           padding: const EdgeInsets.all(25),
         );

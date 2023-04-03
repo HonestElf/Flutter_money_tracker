@@ -4,17 +4,26 @@ import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_
 
 enum ModalSate { opened, closed }
 
-class CategoryAddCubit extends Cubit<ModalSate> {
+class AddCubit extends Cubit<ModalSate> {
   final CostsBloc costsBloc;
 
-  CategoryAddCubit({required this.costsBloc}) : super(ModalSate.closed);
+  AddCubit({required this.costsBloc}) : super(ModalSate.closed);
 
   void addNewCategory(String categoryName, String categoryColor) {
     costsBloc.add(AddNewCategory(
         categoryName: categoryName, categoryColor: categoryColor));
   }
 
-  void closeModal() {
-    costsBloc.add(CloseAddModal());
+  void addNewCost(String categoryName, num price, String date) {
+    costsBloc
+        .add(AddNewCost(categoryName: categoryName, date: date, price: price));
+  }
+
+  void closeCategoryModal() {
+    costsBloc.add(CloseAddCategoryModal());
+  }
+
+  void closeCostModal() {
+    costsBloc.add((CloseAddCostModal()));
   }
 }

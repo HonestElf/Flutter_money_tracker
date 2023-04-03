@@ -65,17 +65,21 @@ class _ViewRouterState extends State<ViewRouter> {
   }
 
   Widget _pageView() {
-    return PageView(
-      controller: _pageController,
-      children: const [
-        ViewRouterBody(),
-        ProfileView(),
-      ],
-      onPageChanged: (index) {
-        setState(() {
-          _currentPageIndex = index;
-        });
-      },
+    return BlocProvider(
+      create: (context) =>
+          CostsBloc(dataRepo: context.read<DatabaseRepository>()),
+      child: PageView(
+        controller: _pageController,
+        children: const [
+          ViewRouterBody(),
+          ProfileView(),
+        ],
+        onPageChanged: (index) {
+          setState(() {
+            _currentPageIndex = index;
+          });
+        },
+      ),
     );
   }
 }
@@ -85,41 +89,37 @@ class ViewRouterBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          CostsBloc(dataRepo: context.read<DatabaseRepository>()),
-      child: Navigator(
-        initialRoute: HomeView.routeName,
-        onGenerateRoute: (settings) {
-          switch (settings.name) {
-            case HomeView.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const HomeView(),
-              );
+    return Navigator(
+      initialRoute: HomeView.routeName,
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case HomeView.routeName:
+            return MaterialPageRoute(
+              builder: (_) => const HomeView(),
+            );
 
-            case DetailsView.routeName:
-              final args = settings.arguments as Map<String, dynamic>;
-              if (args.containsKey('categoryName')) {
-                return MaterialPageRoute(
-                  builder: (_) => const DetailsView(
-                      // chosenMonth: args['chosenMonth'],
-                      // chosenYear: args['chosenYear'],
-                      // categoryName: args['categoryName'],
-                      // categoryColor: args['categoryColor'],
-                      ),
-                );
-              }
+          case DetailsView.routeName:
+            final args = settings.arguments as Map<String, dynamic>;
+            if (args.containsKey('categoryName')) {
               return MaterialPageRoute(
-                builder: (_) => const NotFoundView(),
+                builder: (_) => const DetailsView(
+                    // chosenMonth: args['chosenMonth'],
+                    // chosenYear: args['chosenYear'],
+                    // categoryName: args['categoryName'],
+                    // categoryColor: args['categoryColor'],
+                    ),
               );
+            }
+            return MaterialPageRoute(
+              builder: (_) => const NotFoundView(),
+            );
 
-            default:
-              return MaterialPageRoute(
-                builder: (_) => const NotFoundView(),
-              );
-          }
-        },
-      ),
+          default:
+            return MaterialPageRoute(
+              builder: (_) => const NotFoundView(),
+            );
+        }
+      },
     );
   }
 }

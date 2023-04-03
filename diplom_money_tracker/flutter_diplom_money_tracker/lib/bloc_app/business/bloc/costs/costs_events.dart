@@ -15,9 +15,19 @@ class ChangeDate extends CostsEvent {
   ChangeDate({required this.date});
 }
 
-class OpenAddModal extends CostsEvent {}
+class OpenAddCategoryModal extends CostsEvent {}
 
-class CloseAddModal extends CostsEvent {}
+class CloseAddCategoryModal extends CostsEvent {}
+
+class OpenAddCostModal extends CostsEvent {}
+
+class CloseAddCostModal extends CostsEvent {}
+
+class SetCurrentEditingCategory extends CostsEvent {
+  final String categoryName;
+
+  SetCurrentEditingCategory({required this.categoryName});
+}
 
 class AddNewCategory extends CostsEvent {
   final String categoryName;
@@ -26,14 +36,14 @@ class AddNewCategory extends CostsEvent {
   AddNewCategory({required this.categoryName, required this.categoryColor});
 }
 
-// class AddNewCost extends CostsEvent {
-//   final String categoryName;
-//   final String date;
-//   final num price;
+class AddNewCost extends CostsEvent {
+  final String categoryName;
+  final String date;
+  final num price;
 
-//   AddNewCost(
-//       {required this.categoryName, required this.date, required this.price});
-// }
+  AddNewCost(
+      {required this.categoryName, required this.date, required this.price});
+}
 
 // class DeleteCategory extends CostsEvent {
 //   final String categoryName;

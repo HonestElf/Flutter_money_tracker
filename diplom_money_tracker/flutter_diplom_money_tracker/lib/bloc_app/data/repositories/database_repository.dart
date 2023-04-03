@@ -48,22 +48,22 @@ class DatabaseRepository {
     }
   }
 
-  // void addNewCost(String categoryName, num price, String date) {
-  //   try {
-  //     final document = collection.doc(categoryName).withConverter(
-  //           fromFirestore: (snapshot, options) =>
-  //               CostCategory.fromJson(snapshot.data()!),
-  //           toFirestore: (value, options) => value.toJson(),
-  //         );
-  //     document.update({
-  //       'costs': FieldValue.arrayUnion([
-  //         {'date': date, 'price': price}
-  //       ])
-  //     });
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+  Future<void> addNewCost(String categoryName, num price, String date) async {
+    try {
+      final document = _collection.doc(categoryName).withConverter(
+            fromFirestore: (snapshot, options) =>
+                CostCategory.fromJson(snapshot.data()!),
+            toFirestore: (value, options) => value.toJson(),
+          );
+      await document.update({
+        'costs': FieldValue.arrayUnion([
+          {'date': date, 'price': price}
+        ])
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   // void deleteCategory(String categoryName) {
   //   try {

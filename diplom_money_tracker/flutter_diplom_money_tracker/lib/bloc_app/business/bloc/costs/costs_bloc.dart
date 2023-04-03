@@ -13,10 +13,7 @@ class CostsBloc extends Bloc<CostsEvent, CostsState> {
   CostsBloc({required this.dataRepo}) : super(CostsState()) {
     on<CostsEvent>(_onEvent);
 
-    final categories = dataRepo.getAllCategories();
-
     dataStream = dataRepo.stream.listen((event) {
-      print('EVENT: ${event}');
       add(LoadAllCategories(categories: event));
     });
   }
@@ -27,30 +24,34 @@ class CostsBloc extends Bloc<CostsEvent, CostsState> {
     } else if (event is ChangeDate) {
       emit(state.copyWith(
           chosenMonth: event.date.month, chosenYear: event.date.year));
-    } else if (event is OpenAddModal) {
+    } else if (event is OpenAddCategoryModal) {
       emit(state.copyWith(addCategoryWindowIsVisible: true));
-    } else if (event is CloseAddModal) {
+    } else if (event is CloseAddCategoryModal) {
       emit(state.copyWith(addCategoryWindowIsVisible: false));
+    } else if (event is OpenAddCostModal) {
+      emit(state.copyWith(addCostWindowIsVisible: true));
+    } else if (event is CloseAddCostModal) {
+      emit(state.copyWith(addCostWindowIsVisible: false));
+    } else if (event is SetCurrentEditingCategory) {
+      emit(state.copyWith(currentEditingCategory: event.categoryName));
     } else if (event is AddNewCategory) {
       try {
+        emit(state.copyWith(addCategoryWindowIsVisible: false));
         await dataRepo.addNewCategory(event.categoryName, event.categoryColor);
-        emit(state.copyWith(addCategoryWindowIsVisible: false, costCategories: [
-          ...state.costCategories,
-          CostCategory(
-              categoryName: event.categoryName,
-              categoryColor: event.categoryColor)
-        ]));
       } catch (e) {
         rethrow;
       }
+    } else if (event is AddNewCost) {
+      emit(state.copyWith(addCostWindowIsVisible: false));
+      await dataRepo.addNewCost(event.categoryName, event.price, event.date);
     }
-    //else if (event is AddNewCost) {
-    // } else if (event is DeleteCategory) {
+    //else if (event is DeleteCategory) {
     // } else if (event is DeleteCost) {}
   }
 
   @override
   Future<void> close() {
+    print('CLOSED');
     dataStream.cancel();
     return super.close();
   }

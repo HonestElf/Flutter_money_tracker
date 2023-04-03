@@ -10,6 +10,8 @@ class CostsState {
   String get monthName => parseMonth(chosenMonth);
 
   bool addCategoryWindowIsVisible;
+  bool addCostWindowIsVisible;
+  String? currentEditingCategory;
 
   List<CostCategory> get categoriesByMonth => costCategories.map((category) {
         return CostCategory(
@@ -27,21 +29,30 @@ class CostsState {
     this.chosenMonth = 0,
     this.chosenYear = 0,
     this.addCategoryWindowIsVisible = false,
+    this.addCostWindowIsVisible = false,
+    this.currentEditingCategory,
   }) {
     chosenMonth = DateTime.now().month;
     chosenYear = DateTime.now().year;
   }
 
-  CostsState copyWith(
-      {int? chosenMonth,
-      int? chosenYear,
-      List<CostCategory>? costCategories,
-      bool? addCategoryWindowIsVisible}) {
+  CostsState copyWith({
+    int? chosenMonth,
+    int? chosenYear,
+    List<CostCategory>? costCategories,
+    bool? addCategoryWindowIsVisible,
+    bool? addCostWindowIsVisible,
+    String? currentEditingCategory,
+  }) {
     return CostsState(
         chosenMonth: chosenMonth ?? this.chosenMonth,
         chosenYear: chosenYear ?? this.chosenYear,
         costCategories: costCategories ?? this.costCategories,
         addCategoryWindowIsVisible:
-            addCategoryWindowIsVisible ?? this.addCategoryWindowIsVisible);
+            addCategoryWindowIsVisible ?? this.addCategoryWindowIsVisible,
+        addCostWindowIsVisible:
+            addCostWindowIsVisible ?? this.addCostWindowIsVisible,
+        currentEditingCategory:
+            currentEditingCategory ?? this.currentEditingCategory);
   }
 }
