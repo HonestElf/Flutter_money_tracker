@@ -5,10 +5,12 @@ import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_events.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_state.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/cubit/add_cubit.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/business/utils/color_parser.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/entities/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/cost_category_card/cost_category_card.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/modals/add_category_modal.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/ui/modals/add_cost_modal.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 final List<CostCategory> categories = [
   CostCategory(categoryName: 'Cat', categoryColor: 'F2B846'),
@@ -75,7 +77,18 @@ class HomeView extends StatelessWidget {
         builder: (context, state) {
           return AppBar(
             centerTitle: true,
-            title: Text(state.monthName),
+            title: TextButton(
+              onPressed: () {
+                _openDateModal(context);
+              },
+              child: Text(
+                state.monthName,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
             actions: [
               IconButton(
                   onPressed: () {
@@ -89,19 +102,58 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  void _openDateModal(BuildContext context) async {
+    final chosenDate = await showMonthPicker(
+      context: context,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      initialDate: DateTime.now(),
+    );
+
+    if (chosenDate != null) {
+      context.read<CostsBloc>().add(ChangeDate(date: chosenDate));
+    }
+  }
+
   Widget _costsPieChart() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      alignment: Alignment.center,
-      color: Colors.grey[200],
-      child: PieChart(
-        PieChartData(
-          sections: [
-            PieChartSectionData(value: 40, radius: 70, color: Colors.green),
-            PieChartSectionData(value: 20, radius: 70, color: Colors.red),
-          ],
-        ),
-      ),
+    return BlocBuilder<CostsBloc, CostsState>(
+      builder: (context, state) {
+        bool isEmpty = true;
+        for (var element in state.categoriesByMonth) {
+          if (element.items.isNotEmpty) {
+            isEmpty = false;
+            break;
+          } else {
+            isEmpty = true;
+          }
+        }
+
+        return isEmpty
+            ? const Center(
+                child: Text('Пока нет трат'),
+              )
+            : Container(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                alignment: Alignment.center,
+                color: Colors.grey[200],
+                child: PieChart(
+                  PieChartData(
+                    sections: [
+                      ...state.categoriesByMonth.map((category) {
+                        double costsSum = 0;
+                        for (var element in category.items) {
+                          costsSum += element.costPrice.toDouble();
+                        }
+                        return PieChartSectionData(
+                            value: costsSum,
+                            radius: 70,
+                            color: getColorFromHex(category.categoryColor));
+                      })
+                    ],
+                  ),
+                ),
+              );
+      },
     );
   }
 
@@ -109,7 +161,7 @@ class HomeView extends StatelessWidget {
     return BlocBuilder<CostsBloc, CostsState>(
       builder: (context, state) {
         return ListView.separated(
-          itemCount: state.costCategories.length,
+          itemCount: state.categoriesByMonth.length,
           separatorBuilder: (context, index) => const SizedBox(
             height: 25,
           ),
@@ -120,7 +172,7 @@ class HomeView extends StatelessWidget {
               context.read<CostsBloc>().add(OpenAddCostModal());
             },
             child: CostCategoryCard(
-              category: state.costCategories[index],
+              category: state.categoriesByMonth[index],
             ),
           ),
           padding: const EdgeInsets.all(25),

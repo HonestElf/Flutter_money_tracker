@@ -16,6 +16,8 @@ class CostsBloc extends Bloc<CostsEvent, CostsState> {
     dataStream = dataRepo.stream.listen((event) {
       add(LoadAllCategories(categories: event));
     });
+
+    add(ChangeDate(date: DateTime.now()));
   }
 
   Future<void> _onEvent(CostsEvent event, Emitter<CostsState> emit) async {
@@ -44,9 +46,14 @@ class CostsBloc extends Bloc<CostsEvent, CostsState> {
     } else if (event is AddNewCost) {
       emit(state.copyWith(addCostWindowIsVisible: false));
       await dataRepo.addNewCost(event.categoryName, event.price, event.date);
+    } else if (event is DeleteCategory) {
+      try {
+        await dataRepo.deleteCategory(event.categoryName);
+      } catch (e) {
+        rethrow;
+      }
     }
-    //else if (event is DeleteCategory) {
-    // } else if (event is DeleteCost) {}
+    //else if (event is DeleteCost) {}
   }
 
   @override

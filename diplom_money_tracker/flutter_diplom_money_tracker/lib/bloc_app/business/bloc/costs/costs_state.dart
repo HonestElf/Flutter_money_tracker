@@ -2,8 +2,8 @@ import 'package:flutter_diplom_money_tracker/bloc_app/business/utils/month_parse
 import 'package:flutter_diplom_money_tracker/bloc_app/data/entities/cost_category.dart';
 
 class CostsState {
-  late int chosenMonth;
-  late int chosenYear;
+  int chosenMonth;
+  int chosenYear;
 
   final List<CostCategory> costCategories;
 
@@ -31,10 +31,7 @@ class CostsState {
     this.addCategoryWindowIsVisible = false,
     this.addCostWindowIsVisible = false,
     this.currentEditingCategory,
-  }) {
-    chosenMonth = DateTime.now().month;
-    chosenYear = DateTime.now().year;
-  }
+  });
 
   CostsState copyWith({
     int? chosenMonth,

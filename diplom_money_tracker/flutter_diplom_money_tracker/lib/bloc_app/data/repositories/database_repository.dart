@@ -65,13 +65,13 @@ class DatabaseRepository {
     }
   }
 
-  // void deleteCategory(String categoryName) {
-  //   try {
-  //     collection.doc(categoryName).delete();
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+  Future<void> deleteCategory(String categoryName) async {
+    try {
+      await _collection.doc(categoryName).delete();
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   // void deleteCost(String categoryName, CostItem item) {
   //   try {

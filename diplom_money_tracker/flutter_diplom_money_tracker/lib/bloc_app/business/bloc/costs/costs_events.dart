@@ -45,11 +45,11 @@ class AddNewCost extends CostsEvent {
       {required this.categoryName, required this.date, required this.price});
 }
 
-// class DeleteCategory extends CostsEvent {
-//   final String categoryName;
+class DeleteCategory extends CostsEvent {
+  final String categoryName;
 
-//   DeleteCategory({required this.categoryName});
-// }
+  DeleteCategory({required this.categoryName});
+}
 
 // class DeleteCost extends CostsEvent {
 //   final String categoryName;
