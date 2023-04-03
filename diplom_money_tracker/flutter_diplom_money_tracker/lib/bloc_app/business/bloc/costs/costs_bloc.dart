@@ -52,8 +52,9 @@ class CostsBloc extends Bloc<CostsEvent, CostsState> {
       } catch (e) {
         rethrow;
       }
+    } else if (event is DeleteCost) {
+      await dataRepo.deleteCost(event.categoryName, event.item);
     }
-    //else if (event is DeleteCost) {}
   }
 
   @override

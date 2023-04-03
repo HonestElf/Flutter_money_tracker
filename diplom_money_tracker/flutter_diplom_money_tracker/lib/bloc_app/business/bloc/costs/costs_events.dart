@@ -51,9 +51,9 @@ class DeleteCategory extends CostsEvent {
   DeleteCategory({required this.categoryName});
 }
 
-// class DeleteCost extends CostsEvent {
-//   final String categoryName;
-//   final CostItem item;
+class DeleteCost extends CostsEvent {
+  final String categoryName;
+  final CostItem item;
 
-//   DeleteCost({required this.categoryName, required this.item});
-// }
+  DeleteCost({required this.categoryName, required this.item});
+}

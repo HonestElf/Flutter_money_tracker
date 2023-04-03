@@ -73,21 +73,21 @@ class DatabaseRepository {
     }
   }
 
-  // void deleteCost(String categoryName, CostItem item) {
-  //   try {
-  //     final document = collection.doc(categoryName).withConverter(
-  //           fromFirestore: (snapshot, options) =>
-  //               CostItem.fromJson(snapshot.data()!),
-  //           toFirestore: (value, options) => value.toJson(),
-  //         );
+  Future<void> deleteCost(String categoryName, CostItem item) async {
+    try {
+      final document = _collection.doc(categoryName).withConverter(
+            fromFirestore: (snapshot, options) =>
+                CostItem.fromJson(snapshot.data()!),
+            toFirestore: (value, options) => value.toJson(),
+          );
 
-  //     document.update({
-  //       'costs': FieldValue.arrayRemove([
-  //         {'date': item.costDay, 'price': item.costPrice}
-  //       ])
-  //     });
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+      await document.update({
+        'costs': FieldValue.arrayRemove([
+          {'date': item.costDay, 'price': item.costPrice}
+        ])
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

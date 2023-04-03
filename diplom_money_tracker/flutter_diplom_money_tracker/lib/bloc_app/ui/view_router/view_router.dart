@@ -99,19 +99,8 @@ class ViewRouterBody extends StatelessWidget {
             );
 
           case DetailsView.routeName:
-            final args = settings.arguments as Map<String, dynamic>;
-            if (args.containsKey('categoryName')) {
-              return MaterialPageRoute(
-                builder: (_) => const DetailsView(
-                    // chosenMonth: args['chosenMonth'],
-                    // chosenYear: args['chosenYear'],
-                    // categoryName: args['categoryName'],
-                    // categoryColor: args['categoryColor'],
-                    ),
-              );
-            }
             return MaterialPageRoute(
-              builder: (_) => const NotFoundView(),
+              builder: (_) => const DetailsView(),
             );
 
           default:

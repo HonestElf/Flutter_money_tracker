@@ -24,6 +24,19 @@ class CostsState {
             }).toList());
       }).toList();
 
+  CostCategory get categoryByName {
+    final category = costCategories.firstWhere(
+        (element) => element.categoryName == currentEditingCategory);
+    return CostCategory(
+        categoryName: category.categoryName,
+        categoryColor: category.categoryColor,
+        items: category.items.where((cost) {
+          final parsedDate = DateTime.parse(cost.costDay);
+          return parsedDate.month == chosenMonth &&
+              parsedDate.year == chosenYear;
+        }).toList());
+  }
+
   CostsState({
     this.costCategories = const [],
     this.chosenMonth = 0,

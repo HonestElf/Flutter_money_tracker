@@ -5,6 +5,7 @@ import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_
 import 'package:flutter_diplom_money_tracker/bloc_app/business/bloc/costs/costs_state.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/business/utils/color_parser.dart';
 import 'package:flutter_diplom_money_tracker/bloc_app/data/entities/cost_category.dart';
+import 'package:flutter_diplom_money_tracker/bloc_app/ui/details_view/details_view.dart';
 
 class CostCategoryCard extends StatefulWidget {
   const CostCategoryCard({
@@ -67,13 +68,10 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
               subtitle: Text('Всего: $costsSum'),
               trailing: IconButton(
                 onPressed: () {
-                  // widget.navigateCallback(
-                  // widget.category.categoryName, widget.category.categoryColor);
-                  // Navigator.of(context)
-                  //     .pushNamed(CategoryView.routeName, arguments: {
-                  //   'categoryName': widget.category.categoryName,
-                  //   'categoryColor': widget.category.categoryColor
-                  // });
+                  context.read<CostsBloc>().add(SetCurrentEditingCategory(
+                      categoryName: widget.category.categoryName));
+
+                  Navigator.of(context).pushNamed(DetailsView.routeName);
                 },
                 icon: Icon(
                   Icons.keyboard_arrow_right_outlined,
