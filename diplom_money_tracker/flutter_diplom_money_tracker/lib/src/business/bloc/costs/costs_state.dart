@@ -1,6 +1,7 @@
 // Project imports:
 import 'package:flutter_diplom_money_tracker/src/business/utils/month_parser.dart';
-import 'package:flutter_diplom_money_tracker/src/data/entities/cost_category.dart';
+import 'package:module_model/module_model.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/entities/cost_category.dart';
 
 class CostsState {
   int chosenMonth;

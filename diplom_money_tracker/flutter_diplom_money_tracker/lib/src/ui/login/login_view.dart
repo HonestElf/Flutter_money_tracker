@@ -9,9 +9,10 @@ import 'package:flutter_diplom_money_tracker/src/business/bloc/login/login_bloc.
 import 'package:flutter_diplom_money_tracker/src/business/bloc/login/login_event.dart';
 import 'package:flutter_diplom_money_tracker/src/business/bloc/login/login_state.dart';
 import 'package:flutter_diplom_money_tracker/src/business/cubit/auth_cubit.dart';
-import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
 import 'package:flutter_diplom_money_tracker/src/data/repositories/auth_repository.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/login_body/login_body.dart';
+import 'package:module_model/module_model.dart';
 
 class LoginView extends StatelessWidget {
   LoginView({super.key});

@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Project imports:
 import 'package:flutter_diplom_money_tracker/src/business/cubit/session_state.dart';
-import 'package:flutter_diplom_money_tracker/src/data/auth_credentials.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/auth_credentials.dart';
 import 'package:flutter_diplom_money_tracker/src/data/repositories/auth_repository.dart';
+import 'package:module_model/module_model.dart';
 
 class SessionCubit extends Cubit<SessionState> {
   final AuthRepository authRepo;

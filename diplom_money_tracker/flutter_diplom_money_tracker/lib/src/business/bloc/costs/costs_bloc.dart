@@ -7,8 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Project imports:
 import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_events.dart';
 import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_state.dart';
-import 'package:flutter_diplom_money_tracker/src/data/entities/cost_category.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/entities/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/src/data/repositories/database_repository.dart';
+import 'package:module_model/module_model.dart';
 
 class CostsBloc extends Bloc<CostsEvent, CostsState> {
   final DatabaseRepository dataRepo;

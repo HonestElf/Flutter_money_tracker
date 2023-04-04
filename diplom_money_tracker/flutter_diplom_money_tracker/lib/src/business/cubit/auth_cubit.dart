@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Project imports:
 import 'package:flutter_diplom_money_tracker/src/business/cubit/session_cubit.dart';
-import 'package:flutter_diplom_money_tracker/src/data/auth_credentials.dart';
+import 'package:module_model/module_model.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/auth_credentials.dart';
 
 enum AuthState { login, signUp }
 

@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_diplom_money_tracker/src/business/bloc/sign_up/sign_up_event.dart';
 import 'package:flutter_diplom_money_tracker/src/business/bloc/sign_up/sign_up_state.dart';
 import 'package:flutter_diplom_money_tracker/src/business/cubit/auth_cubit.dart';
-import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
 import 'package:flutter_diplom_money_tracker/src/data/repositories/auth_repository.dart';
+import 'package:module_model/module_model.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final AuthRepository authRepo;

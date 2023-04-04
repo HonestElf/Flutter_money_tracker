@@ -2,8 +2,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Project imports:
-import 'package:flutter_diplom_money_tracker/src/data/entities/cost_category.dart';
-import 'package:flutter_diplom_money_tracker/src/data/entities/cost_item.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/entities/cost_category.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/entities/cost_item.dart';
+import 'package:module_model/module_model.dart';
 
 class DatabaseRepository {
   late CollectionReference<CostCategory> _collection;

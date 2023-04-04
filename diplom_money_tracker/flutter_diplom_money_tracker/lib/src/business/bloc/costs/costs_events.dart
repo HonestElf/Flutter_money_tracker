@@ -1,6 +1,7 @@
 // Project imports:
-import 'package:flutter_diplom_money_tracker/src/data/entities/cost_category.dart';
-import 'package:flutter_diplom_money_tracker/src/data/entities/cost_item.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/entities/cost_category.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/entities/cost_item.dart';
+import 'package:module_model/module_model.dart';
 
 abstract class CostsEvent {}
 

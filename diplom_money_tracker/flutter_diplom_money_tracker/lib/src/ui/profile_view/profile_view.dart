@@ -13,8 +13,9 @@ import 'package:flutter_diplom_money_tracker/src/business/bloc/profile/profile_b
 import 'package:flutter_diplom_money_tracker/src/business/bloc/profile/profile_events.dart';
 import 'package:flutter_diplom_money_tracker/src/business/bloc/profile/profile_state.dart';
 import 'package:flutter_diplom_money_tracker/src/business/cubit/session_cubit.dart';
-import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
 import 'package:flutter_diplom_money_tracker/src/data/repositories/storage_repository.dart';
+import 'package:module_model/module_model.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});

@@ -29,6 +29,9 @@ dependencies:
   email_validator: ^2.1.17
   equatable: ^2.0.5
 
+  module_model:
+    path: packages/module_model
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

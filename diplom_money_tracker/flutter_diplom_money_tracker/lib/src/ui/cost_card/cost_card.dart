@@ -8,7 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_bloc.dart';
 import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_events.dart';
 import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_state.dart';
-import 'package:flutter_diplom_money_tracker/src/data/entities/cost_item.dart';
+import 'package:module_model/module_model.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/entities/cost_item.dart';
 
 class CostCard extends StatelessWidget {
   const CostCard({super.key, required this.item, required this.categoryName});

@@ -1,5 +1,7 @@
 // Project imports:
-import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
+
+import 'package:module_model/module_model.dart';
 
 class SignUpState {
   final String username;

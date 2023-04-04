@@ -9,8 +9,9 @@ import 'package:image_picker/image_picker.dart';
 // Project imports:
 import 'package:flutter_diplom_money_tracker/src/business/bloc/profile/profile_events.dart';
 import 'package:flutter_diplom_money_tracker/src/business/bloc/profile/profile_state.dart';
-import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
 import 'package:flutter_diplom_money_tracker/src/data/repositories/storage_repository.dart';
+import 'package:module_model/module_model.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ImagePicker _picker = ImagePicker();

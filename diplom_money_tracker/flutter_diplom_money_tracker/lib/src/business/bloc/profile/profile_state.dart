@@ -1,8 +1,9 @@
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:module_model/module_model.dart';
 
 // Project imports:
-import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
 
 class ProfileState {
   final User user;
