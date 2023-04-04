@@ -72,7 +72,7 @@ class ProfileView extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  _logoutButton(),
+                  _logoutButton(context),
                 ],
               )
             ],
@@ -82,14 +82,16 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget _logoutButton() {
+  Widget _logoutButton(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF9053EB),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             minimumSize: const Size(150, 50)),
-        onPressed: () {},
+        onPressed: () {
+          context.read<SessionCubit>().signOut();
+        },
         child: const Text(
           'Выйти',
           style: TextStyle(fontSize: 17),
