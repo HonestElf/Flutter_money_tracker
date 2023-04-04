@@ -4,14 +4,10 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:module_business/module_business.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 // Project imports:
-import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_bloc.dart';
-import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_events.dart';
-import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_state.dart';
-import 'package:flutter_diplom_money_tracker/src/business/cubit/add_cubit.dart';
-import 'package:flutter_diplom_money_tracker/src/business/utils/color_parser.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/cost_category_card/cost_category_card.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/modals/add_category_modal.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/modals/add_cost_modal.dart';

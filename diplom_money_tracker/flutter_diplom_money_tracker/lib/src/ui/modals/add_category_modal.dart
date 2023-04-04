@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:module_business/module_business.dart';
 
 // Project imports:
-import 'package:flutter_diplom_money_tracker/src/business/cubit/add_cubit.dart';
 
 class AddCategoryModal extends StatefulWidget {
   const AddCategoryModal({super.key});

@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:module_business/module_business.dart';
+import 'package:module_data/module_data.dart';
+import 'package:module_model/module_model.dart';
 
 // Project imports:
-import 'package:flutter_diplom_money_tracker/src/business/cubit/auth_cubit.dart';
-import 'package:flutter_diplom_money_tracker/src/business/cubit/session_cubit.dart';
-import 'package:flutter_diplom_money_tracker/src/business/cubit/session_state.dart';
-import 'package:flutter_diplom_money_tracker/src/data/repositories/database_repository.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/loading_view/loading_view.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/navigators/auth_navigator.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/view_router/view_router.dart';
+
+// Project imports:
+
 
 class AppNavigator extends StatelessWidget {
   const AppNavigator({super.key});
