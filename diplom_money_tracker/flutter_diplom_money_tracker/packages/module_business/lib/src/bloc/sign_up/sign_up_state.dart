@@ -3,9 +3,8 @@ import 'package:module_model/module_model.dart';
 
 class SignUpState {
   final String username;
-  // bool get isValidUsername =>
-  //     !RegExp(r'\S+@\S+\.\S+').hasMatch(username) && username.length > 3;
-  bool get isValidUsername => username.length > 3;
+  bool get isValidUsername =>
+      RegExp(r'\S+@\S+\.\S+').hasMatch(username) && username.length > 3;
 
   final String password;
   bool get isValidPassword => password.length > 5;
