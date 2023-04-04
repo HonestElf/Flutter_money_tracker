@@ -14,7 +14,6 @@ Color getColorFromHex(String? hexColor) {
         return Color(int.parse('0x$hexColor'));
       }
     } catch (error) {
-      print("COLOR ERROR: ${error.toString()}");
       return const Color(0xFFFFFFFF);
     }
   }
