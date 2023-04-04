@@ -1,8 +1,18 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
+import 'package:flutter_diplom_money_tracker/src/business/cubit/add_cubit.dart';
+
 class AddCostModal extends StatefulWidget {
-  const AddCostModal({super.key, required this.positiveCallback});
-  final Function positiveCallback;
+  const AddCostModal({
+    super.key,
+    required this.currentEditingCategory,
+  });
+  final String currentEditingCategory;
 
   @override
   State<AddCostModal> createState() => _AddCostModalState();
@@ -45,28 +55,6 @@ class _AddCostModalState extends State<AddCostModal> {
     }
   }
 
-  void addCostToCategory() {
-    if (_priceController.text != '') {
-      try {
-        widget.positiveCallback(int.parse(_priceController.text), currentDate!);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              duration: Duration(milliseconds: 1000),
-              backgroundColor: Colors.green,
-              content: Text('Добавляем...')),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              duration: const Duration(milliseconds: 1000),
-              backgroundColor: Colors.red,
-              content: Text(e.toString())),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -97,52 +85,74 @@ class _AddCostModalState extends State<AddCostModal> {
           const SizedBox(
             height: 30,
           ),
-          TextField(
-            controller: _priceController,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF9053EB), width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                ),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                ),
-                label: Text('Введите сумму'),
-                floatingLabelStyle: TextStyle(color: Color(0xFF9053EB))),
-          ),
+          _priceField(),
           const SizedBox(
             height: 30,
           ),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF9053EB),
-                minimumSize: Size(MediaQuery.of(context).size.width, 50),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                addCostToCategory();
-              },
-              child: const Text('Добавить', style: TextStyle(fontSize: 17))),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                shadowColor: Colors.transparent,
-                backgroundColor: Colors.white,
-                minimumSize: Size(MediaQuery.of(context).size.width, 50),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Отменить',
-                  style: TextStyle(fontSize: 17, color: Colors.red))),
+          _submitButton(),
+          _cancelButton(),
         ],
       ),
+    );
+  }
+
+  Widget _priceField() {
+    return TextField(
+      controller: _priceController,
+      keyboardType: TextInputType.number,
+      decoration: const InputDecoration(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFF9053EB), width: 1),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(width: 1),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
+          label: Text('Введите сумму'),
+          floatingLabelStyle: TextStyle(color: Color(0xFF9053EB))),
+    );
+  }
+
+  Widget _submitButton() {
+    return BlocBuilder<AddCubit, ModalSate>(
+      builder: (context, state) {
+        return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF9053EB),
+              minimumSize: Size(MediaQuery.of(context).size.width, 50),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              context.read<AddCubit>().addNewCost(widget.currentEditingCategory,
+                  int.parse(_priceController.text), currentDate!);
+            },
+            child: const Text('Добавить', style: TextStyle(fontSize: 17)));
+      },
+    );
+  }
+
+  Widget _cancelButton() {
+    return BlocBuilder<AddCubit, ModalSate>(
+      builder: (context, state) {
+        return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              shadowColor: Colors.transparent,
+              backgroundColor: Colors.white,
+              minimumSize: Size(MediaQuery.of(context).size.width, 50),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              context.read<AddCubit>().closeCostModal();
+            },
+            child: const Text('Отменить',
+                style: TextStyle(fontSize: 17, color: Colors.red)));
+      },
     );
   }
 }
