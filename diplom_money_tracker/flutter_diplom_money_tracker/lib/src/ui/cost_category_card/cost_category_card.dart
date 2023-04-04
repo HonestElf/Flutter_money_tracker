@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:module_business/module_business.dart';
+import 'package:module_model/module_model.dart';
 
 // Project imports:
-import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_bloc.dart';
-import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_events.dart';
-import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_state.dart';
-import 'package:flutter_diplom_money_tracker/src/business/utils/color_parser.dart';
-// import 'package:flutter_diplom_money_tracker/src/data/entities/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/details_view/details_view.dart';
-import 'package:module_model/module_model.dart';
 
 class CostCategoryCard extends StatelessWidget {
   const CostCategoryCard({

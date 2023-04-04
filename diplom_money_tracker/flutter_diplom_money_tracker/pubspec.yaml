@@ -19,20 +19,16 @@ dependencies:
   month_picker_dialog: ^1.0.0
 
   firebase_core: ^2.7.1
-  firebase_auth: ^4.2.10
-  firebase_storage: ^11.0.16
-  cloud_firestore: ^4.4.5
 
   flutter_bloc: ^8.1.2
-  bloc: ^8.1.1
-  google_sign_in: ^6.0.2
-  email_validator: ^2.1.17
-  equatable: ^2.0.5
 
   module_model:
     path: packages/module_model
   module_data:
     path: packages/module_data
+  module_business:
+    path: packages/module_business
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

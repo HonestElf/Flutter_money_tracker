@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:module_business/module_business.dart';
+import 'package:module_data/module_data.dart';
 
 // Project imports:
-import 'package:flutter_diplom_money_tracker/src/business/bloc/costs/costs_bloc.dart';
-// import 'package:flutter_diplom_money_tracker/src/data/repositories/database_repository.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/details_view/details_view.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/home_view/home_view.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/not_found_view/not_found_view.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/profile_view/profile_view.dart';
-import 'package:module_data/module_data.dart';
 
 class ViewRouter extends StatefulWidget {
   const ViewRouter({

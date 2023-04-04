@@ -1,5 +1,4 @@
 // Project imports:
-
 import 'package:module_model/src/cost_item.dart';
 
 class CostCategory {
