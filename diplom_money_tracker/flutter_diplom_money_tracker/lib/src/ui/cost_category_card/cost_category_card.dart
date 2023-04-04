@@ -12,34 +12,28 @@ import 'package:flutter_diplom_money_tracker/src/business/utils/color_parser.dar
 import 'package:flutter_diplom_money_tracker/src/data/entities/cost_category.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/details_view/details_view.dart';
 
-class CostCategoryCard extends StatefulWidget {
+class CostCategoryCard extends StatelessWidget {
   const CostCategoryCard({
     super.key,
     required this.category,
   });
   final CostCategory category;
-  // final Function navigateCallback;
 
-  @override
-  State<CostCategoryCard> createState() => _CostCategoryCardState();
-}
-
-class _CostCategoryCardState extends State<CostCategoryCard> {
   @override
   Widget build(BuildContext context) {
     double costsSum = 0;
 
-    for (var element in widget.category.items) {
+    for (var element in category.items) {
       costsSum += element.costPrice.toDouble();
     }
     return BlocBuilder<CostsBloc, CostsState>(
       builder: (context, state) {
         return Dismissible(
-          key: Key(
-              '${widget.category.categoryName}_${widget.category.categoryColor}'),
+          key: Key('${category.categoryName}_${category.categoryColor}'),
           onDismissed: (direction) {
-            context.read<CostsBloc>().add(
-                DeleteCategory(categoryName: widget.category.categoryName));
+            context
+                .read<CostsBloc>()
+                .add(DeleteCategory(categoryName: category.categoryName));
           },
           background: Container(
             padding: const EdgeInsets.all(8),
@@ -69,18 +63,18 @@ class _CostCategoryCardState extends State<CostCategoryCard> {
               ],
             ),
             child: ListTile(
-              title: Text(widget.category.categoryName),
+              title: Text(category.categoryName),
               subtitle: Text('Всего: $costsSum'),
               trailing: IconButton(
                 onPressed: () {
                   context.read<CostsBloc>().add(SetCurrentEditingCategory(
-                      categoryName: widget.category.categoryName));
+                      categoryName: category.categoryName));
 
                   Navigator.of(context).pushNamed(DetailsView.routeName);
                 },
                 icon: Icon(
                   Icons.keyboard_arrow_right_outlined,
-                  color: getColorFromHex(widget.category.categoryColor),
+                  color: getColorFromHex(category.categoryColor),
                   size: 40,
                 ),
               ),
