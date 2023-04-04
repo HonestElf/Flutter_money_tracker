@@ -10,8 +10,9 @@ import 'package:flutter_diplom_money_tracker/src/business/bloc/sign_up/sign_up_e
 import 'package:flutter_diplom_money_tracker/src/business/bloc/sign_up/sign_up_state.dart';
 import 'package:flutter_diplom_money_tracker/src/business/cubit/auth_cubit.dart';
 // import 'package:flutter_diplom_money_tracker/src/data/form_submission_status.dart';
-import 'package:flutter_diplom_money_tracker/src/data/repositories/auth_repository.dart';
+// import 'package:flutter_diplom_money_tracker/src/data/repositories/auth_repository.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/login_body/login_body.dart';
+import 'package:module_data/module_data.dart';
 import 'package:module_model/module_model.dart';
 
 class SignUpView extends StatelessWidget {

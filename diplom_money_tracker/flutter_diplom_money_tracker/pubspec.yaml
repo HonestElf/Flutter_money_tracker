@@ -31,7 +31,8 @@ dependencies:
 
   module_model:
     path: packages/module_model
-
+  module_data:
+    path: packages/module_data
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -413,6 +413,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
+  module_data:
+    dependency: "direct main"
+    description:
+      path: "packages/module_data"
+      relative: true
+    source: path
+    version: "0.0.1"
   module_model:
     dependency: "direct main"
     description:

@@ -2,14 +2,21 @@ name: module_data
 description: A new Flutter package project.
 version: 0.0.1
 homepage:
+publish_to: 'none'
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
-  flutter: ">=1.17.0"
+  flutter: '>=1.17.0'
 
 dependencies:
   flutter:
     sdk: flutter
+  firebase_auth: ^4.2.10
+  firebase_storage: ^11.0.16
+  cloud_firestore: ^4.4.5
+
+  module_model:
+    path: ../module_model
 
 dev_dependencies:
   flutter_test:

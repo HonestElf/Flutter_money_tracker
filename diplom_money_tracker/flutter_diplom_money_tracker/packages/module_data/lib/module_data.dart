@@ -1,7 +1,3 @@
-library module_data;
-
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export './src/repositories/auth_repository.dart';
+export './src/repositories/database_repository.dart';
+export './src/repositories/storage_repository.dart';
