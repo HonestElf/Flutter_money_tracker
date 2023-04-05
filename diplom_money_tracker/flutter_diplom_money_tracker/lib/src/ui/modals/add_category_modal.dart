@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:module_business/module_business.dart';
 
-// Project imports:
-
 class AddCategoryModal extends StatefulWidget {
   const AddCategoryModal({super.key});
 
@@ -33,38 +31,42 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
       contentPadding: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
       content: BlocBuilder<AddCubit, ModalSate>(
         builder: (context, state) {
-          return _addCategoryModalBody();
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Добавить категорию',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20,
+                    )),
+                NameField(nameController: _nameController),
+                ColorField(colorController: _colorController),
+                const SizedBox(
+                  height: 30,
+                ),
+                SubmitButton(
+                    nameController: _nameController,
+                    colorController: _colorController),
+                const CancelButton(),
+              ],
+            ),
+          );
         },
       ),
     );
   }
+}
 
-  Widget _addCategoryModalBody() {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text('Добавить категорию',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
-              )),
-          _categoryNameField(),
-          _categoryColorField(),
-          const SizedBox(
-            height: 30,
-          ),
-          _submitButton(),
-          _cancelButton(),
-        ],
-      ),
-    );
-  }
+class NameField extends StatelessWidget {
+  const NameField({super.key, required this.nameController});
+  final TextEditingController nameController;
 
-  Widget _categoryNameField() {
+  @override
+  Widget build(BuildContext context) {
     return TextField(
-      controller: _nameController,
+      controller: nameController,
       decoration: const InputDecoration(
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Color(0xFF9053EB), width: 1),
@@ -77,10 +79,16 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
           )),
     );
   }
+}
 
-  Widget _categoryColorField() {
+class ColorField extends StatelessWidget {
+  const ColorField({super.key, required this.colorController});
+  final TextEditingController colorController;
+
+  @override
+  Widget build(BuildContext context) {
     return TextField(
-      controller: _colorController,
+      controller: colorController,
       maxLength: 6,
       decoration: const InputDecoration(
           focusedBorder: UnderlineInputBorder(
@@ -95,30 +103,13 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
           )),
     );
   }
+}
 
-  Widget _submitButton() {
-    return BlocBuilder<AddCubit, ModalSate>(
-      builder: (context, state) {
-        return ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF9053EB),
-              minimumSize: Size(MediaQuery.of(context).size.width, 50),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-            ),
-            onPressed: () {
-              if (_nameController.text != '' && _colorController.text != '') {
-                Navigator.of(context).pop();
-                context.read<AddCubit>().addNewCategory(
-                    _nameController.text, _colorController.text);
-              }
-            },
-            child: const Text('Добавить', style: TextStyle(fontSize: 17)));
-      },
-    );
-  }
+class CancelButton extends StatelessWidget {
+  const CancelButton({super.key});
 
-  Widget _cancelButton() {
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<AddCubit, ModalSate>(
       builder: (context, state) {
         return ElevatedButton(
@@ -136,6 +127,38 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
             },
             child: const Text('Отмена',
                 style: TextStyle(fontSize: 17, color: Colors.red)));
+      },
+    );
+  }
+}
+
+class SubmitButton extends StatelessWidget {
+  const SubmitButton(
+      {super.key, required this.nameController, required this.colorController});
+
+  final TextEditingController nameController;
+  final TextEditingController colorController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AddCubit, ModalSate>(
+      builder: (context, state) {
+        return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF9053EB),
+              minimumSize: Size(MediaQuery.of(context).size.width, 50),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+            ),
+            onPressed: () {
+              if (nameController.text != '' && colorController.text != '') {
+                Navigator.of(context).pop();
+                context
+                    .read<AddCubit>()
+                    .addNewCategory(nameController.text, colorController.text);
+              }
+            },
+            child: const Text('Добавить', style: TextStyle(fontSize: 17)));
       },
     );
   }

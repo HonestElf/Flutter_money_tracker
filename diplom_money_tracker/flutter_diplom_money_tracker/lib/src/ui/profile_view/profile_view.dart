@@ -11,8 +11,6 @@ import 'package:module_business/module_business.dart';
 import 'package:module_data/module_data.dart';
 import 'package:module_model/module_model.dart';
 
-// Project imports:
-
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
   static const routeName = 'profileView';

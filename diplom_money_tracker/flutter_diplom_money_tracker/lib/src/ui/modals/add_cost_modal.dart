@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_diplom_money_tracker/src/utils/date_formatter.dart';
 import 'package:module_business/module_business.dart';
 
 // Project imports:
@@ -36,8 +37,7 @@ class _AddCostModalState extends State<AddCostModal> {
 
     DateTime now = DateTime.now();
 
-    currentDate =
-        '${now.year}-${now.month <= 9 ? '0${now.month}' : now.month}-${now.day <= 9 ? '0${now.day}' : now.day}';
+    currentDate = formatDate(now);
   }
 
   void openDateModal() async {
@@ -49,8 +49,7 @@ class _AddCostModalState extends State<AddCostModal> {
 
     if (chosenDate != null) {
       setState(() {
-        currentDate =
-            '${chosenDate.year}-${chosenDate.month <= 9 ? '0${chosenDate.month}' : chosenDate.month}-${chosenDate.day <= 9 ? '0${chosenDate.day}' : chosenDate.day}';
+        currentDate = formatDate(chosenDate);
       });
     }
   }
@@ -85,20 +84,32 @@ class _AddCostModalState extends State<AddCostModal> {
           const SizedBox(
             height: 30,
           ),
-          _priceField(),
+          PriceField(priceController: _priceController),
           const SizedBox(
             height: 30,
           ),
-          _submitButton(),
-          _cancelButton(),
+          SubmitButton(
+              priceController: _priceController,
+              currentEditingCategory: widget.currentEditingCategory,
+              currentDate: currentDate),
+          const CancelButton(),
         ],
       ),
     );
   }
+}
 
-  Widget _priceField() {
+class PriceField extends StatelessWidget {
+  const PriceField({
+    super.key,
+    required this.priceController,
+  });
+  final TextEditingController priceController;
+
+  @override
+  Widget build(BuildContext context) {
     return TextField(
-      controller: _priceController,
+      controller: priceController,
       keyboardType: TextInputType.number,
       decoration: const InputDecoration(
           focusedBorder: OutlineInputBorder(
@@ -113,8 +124,22 @@ class _AddCostModalState extends State<AddCostModal> {
           floatingLabelStyle: TextStyle(color: Color(0xFF9053EB))),
     );
   }
+}
 
-  Widget _submitButton() {
+class SubmitButton extends StatelessWidget {
+  const SubmitButton({
+    super.key,
+    required this.priceController,
+    required this.currentEditingCategory,
+    required this.currentDate,
+  });
+
+  final TextEditingController priceController;
+  final String currentEditingCategory;
+  final String? currentDate;
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<AddCubit, ModalSate>(
       builder: (context, state) {
         return ElevatedButton(
@@ -126,15 +151,20 @@ class _AddCostModalState extends State<AddCostModal> {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              context.read<AddCubit>().addNewCost(widget.currentEditingCategory,
-                  int.parse(_priceController.text), currentDate!);
+              context.read<AddCubit>().addNewCost(currentEditingCategory,
+                  int.parse(priceController.text), currentDate!);
             },
             child: const Text('Добавить', style: TextStyle(fontSize: 17)));
       },
     );
   }
+}
 
-  Widget _cancelButton() {
+class CancelButton extends StatelessWidget {
+  const CancelButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<AddCubit, ModalSate>(
       builder: (context, state) {
         return ElevatedButton(

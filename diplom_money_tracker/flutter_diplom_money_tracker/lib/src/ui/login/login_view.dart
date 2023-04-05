@@ -11,9 +11,8 @@ import 'package:module_model/module_model.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/login_body/login_body.dart';
 
 class LoginView extends StatelessWidget {
-  LoginView({super.key});
+  const LoginView({super.key});
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,11 +33,11 @@ class LoginView extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  _loginForm(),
+                  LoginForm(),
                   const SizedBox(
                     height: 30,
                   ),
-                  _showSignUpButton(context),
+                  const ShowSignUpButton()
                 ],
               ),
             ),
@@ -47,8 +46,20 @@ class LoginView extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _loginForm() {
+class LoginForm extends StatelessWidget {
+  LoginForm({super.key});
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         final formStatus = state.formStatus;
@@ -68,20 +79,25 @@ class LoginView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _usernameField(),
-            _passwordField(),
+            const UserNameField(),
+            const PasswordField(),
             const SizedBox(
               height: 30,
             ),
-            _loginButton(),
-            _devLoginButton(),
+            LoginButton(formKey: _formKey),
+            const DevLoginButton(),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _usernameField() {
+class UserNameField extends StatelessWidget {
+  const UserNameField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) => TextFormField(
         keyboardType: TextInputType.emailAddress,
@@ -95,8 +111,13 @@ class LoginView extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _passwordField() {
+class PasswordField extends StatelessWidget {
+  const PasswordField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) => TextFormField(
         keyboardType: TextInputType.visiblePassword,
@@ -112,8 +133,14 @@ class LoginView extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _loginButton() {
+class LoginButton extends StatelessWidget {
+  const LoginButton({super.key, required this.formKey});
+  final GlobalKey<FormState> formKey;
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return state.formStatus is FormSubmitting
@@ -124,7 +151,7 @@ class LoginView extends StatelessWidget {
               )
             : ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
+                  if (formKey.currentState!.validate()) {
                     context.read<LoginBloc>().add(LoginSubmitted());
                   }
                 },
@@ -142,8 +169,13 @@ class LoginView extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget _devLoginButton() {
+class DevLoginButton extends StatelessWidget {
+  const DevLoginButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return state.formStatus is FormSubmitting
@@ -178,18 +210,17 @@ class LoginView extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget _showSignUpButton(BuildContext context) {
+class ShowSignUpButton extends StatelessWidget {
+  const ShowSignUpButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
         child: TextButton(
       onPressed: () => context.read<AuthCubit>().showSignUp(),
       child: const Text('Don\'t have an account? Sign up.'),
     ));
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
