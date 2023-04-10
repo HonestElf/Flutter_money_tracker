@@ -41,7 +41,22 @@ class _ViewRouterState extends State<ViewRouter> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: _pageView(),
+        body: BlocProvider(
+          create: (context) =>
+              CostsBloc(dataRepo: context.read<DatabaseRepository>()),
+          child: PageView(
+            controller: _pageController,
+            children: const [
+              ViewRouterBody(),
+              ProfileView(),
+            ],
+            onPageChanged: (index) {
+              setState(() {
+                _currentPageIndex = index;
+              });
+            },
+          ),
+        ),
         bottomNavigationBar: BottomNavigationBar(
             onTap: (index) {
               setState(() {
@@ -65,25 +80,6 @@ class _ViewRouterState extends State<ViewRouter> {
                   ),
                   label: 'Профиль'),
             ]),
-      ),
-    );
-  }
-
-  Widget _pageView() {
-    return BlocProvider(
-      create: (context) =>
-          CostsBloc(dataRepo: context.read<DatabaseRepository>()),
-      child: PageView(
-        controller: _pageController,
-        children: const [
-          ViewRouterBody(),
-          ProfileView(),
-        ],
-        onPageChanged: (index) {
-          setState(() {
-            _currentPageIndex = index;
-          });
-        },
       ),
     );
   }

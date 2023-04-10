@@ -16,6 +16,19 @@ class HomeView extends StatelessWidget {
   const HomeView({super.key});
   static const routeName = 'homeView';
 
+  void _openDateModal(BuildContext context) async {
+    final chosenDate = await showMonthPicker(
+      context: context,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      initialDate: DateTime.now(),
+    );
+
+    if (chosenDate != null) {
+      context.read<CostsBloc>().add(ChangeDate(date: chosenDate));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -44,72 +57,55 @@ class HomeView extends StatelessWidget {
           );
         }
       },
-      child: Scaffold(
-        appBar: _appBar(),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 3,
-              child: _costsPieChart(),
-            ),
-            Expanded(
-              flex: 5,
-              child: _costsCategories(),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }
-
-  PreferredSize _appBar() {
-    final appBarheight = AppBar().preferredSize.height;
-
-    return PreferredSize(
-      preferredSize: Size.fromHeight(appBarheight),
       child: BlocBuilder<CostsBloc, CostsState>(
         builder: (context, state) {
-          return AppBar(
-            centerTitle: true,
-            title: TextButton(
-              onPressed: () {
-                _openDateModal(context);
-              },
-              child: Text(
-                state.monthName,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700),
+          return Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: TextButton(
+                onPressed: () {
+                  _openDateModal(context);
+                },
+                child: Text(
+                  state.monthName,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700),
+                ),
               ),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      context.read<CostsBloc>().add(OpenAddCategoryModal());
+                    },
+                    icon: const Icon(Icons.add))
+              ],
             ),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    context.read<CostsBloc>().add(OpenAddCategoryModal());
-                  },
-                  icon: const Icon(Icons.add))
-            ],
+            body: Column(
+              children: const [
+                Expanded(
+                  flex: 3,
+                  child: CostsPieChart(),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: CostsCategories(),
+                ),
+              ],
+            ),
           );
         },
       ),
-    );
+    ));
   }
+}
 
-  void _openDateModal(BuildContext context) async {
-    final chosenDate = await showMonthPicker(
-      context: context,
-      firstDate: DateTime(2020),
-      lastDate: DateTime.now(),
-      initialDate: DateTime.now(),
-    );
+class CostsPieChart extends StatelessWidget {
+  const CostsPieChart({super.key});
 
-    if (chosenDate != null) {
-      context.read<CostsBloc>().add(ChangeDate(date: chosenDate));
-    }
-  }
-
-  Widget _costsPieChart() {
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<CostsBloc, CostsState>(
       builder: (context, state) {
         bool isEmpty = true;
@@ -150,8 +146,13 @@ class HomeView extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget _costsCategories() {
+class CostsCategories extends StatelessWidget {
+  const CostsCategories({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<CostsBloc, CostsState>(
       builder: (context, state) {
         return ListView.separated(

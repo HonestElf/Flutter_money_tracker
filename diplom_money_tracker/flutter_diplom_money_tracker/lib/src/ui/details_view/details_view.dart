@@ -20,7 +20,15 @@ class DetailsView extends StatelessWidget {
         final category = state.categoryByName;
         return SafeArea(
           child: Scaffold(
-            appBar: _appBar(),
+            appBar: AppBar(
+              centerTitle: true,
+              title: Text(
+                style:
+                    TextStyle(color: getColorFromHex(category.categoryColor)),
+                category.categoryName,
+              ),
+              backgroundColor: const Color(0xFF9053EB),
+            ),
             body: ListView.separated(
               itemCount: category.items.length,
               separatorBuilder: (context, index) => const SizedBox(
@@ -34,27 +42,6 @@ class DetailsView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  PreferredSize _appBar() {
-    final appBarheight = AppBar().preferredSize.height;
-
-    return PreferredSize(
-      preferredSize: Size.fromHeight(appBarheight),
-      child: BlocBuilder<CostsBloc, CostsState>(
-        builder: (context, state) {
-          final category = context.read<CostsBloc>().state.categoryByName;
-          return AppBar(
-            centerTitle: true,
-            title: Text(
-              style: TextStyle(color: getColorFromHex(category.categoryColor)),
-              category.categoryName,
-            ),
-            backgroundColor: const Color(0xFF9053EB),
-          );
-        },
-      ),
     );
   }
 }

@@ -12,11 +12,9 @@ import 'package:flutter_diplom_money_tracker/src/ui/login_body/login_body.dart';
 
 // Project imports:
 
-
 class SignUpView extends StatelessWidget {
-  SignUpView({super.key});
+  const SignUpView({super.key});
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -37,11 +35,11 @@ class SignUpView extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  _signUpForm(),
+                  SignUpForm(),
                   const SizedBox(
                     height: 30,
                   ),
-                  _showLoginButton(context),
+                  const ShowLoginButton(),
                 ],
               ),
             ),
@@ -50,34 +48,13 @@ class SignUpView extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _signUpForm() {
-    return BlocListener<SignUpBloc, SignUpState>(
-      listener: (context, state) {
-        final formStatus = state.formStatus;
-        if (formStatus is SubmissionFailed) {
-          _showSnackBar(context, formStatus.exception.toString());
-        }
-      },
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _usernameField(),
-            _passwordField(),
-            const SizedBox(
-              height: 30,
-            ),
-            _signUpButton(),
-          ],
-        ),
-      ),
-    );
-  }
+class UserNameField extends StatelessWidget {
+  const UserNameField({super.key});
 
-  Widget _usernameField() {
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<SignUpBloc, SignUpState>(
       builder: (context, state) => TextFormField(
         keyboardType: TextInputType.emailAddress,
@@ -91,8 +68,51 @@ class SignUpView extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _passwordField() {
+class SignUpForm extends StatelessWidget {
+  SignUpForm({super.key});
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<SignUpBloc, SignUpState>(
+      listener: (context, state) {
+        final formStatus = state.formStatus;
+        if (formStatus is SubmissionFailed) {
+          _showSnackBar(context, formStatus.exception.toString());
+        }
+      },
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const UserNameField(),
+            const PasswordField(),
+            const SizedBox(
+              height: 30,
+            ),
+            SignUpButton(formKey: _formKey),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PasswordField extends StatelessWidget {
+  const PasswordField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<SignUpBloc, SignUpState>(
       builder: (context, state) => TextFormField(
         keyboardType: TextInputType.visiblePassword,
@@ -108,8 +128,14 @@ class SignUpView extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _signUpButton() {
+class SignUpButton extends StatelessWidget {
+  const SignUpButton({super.key, required this.formKey});
+  final GlobalKey<FormState> formKey;
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<SignUpBloc, SignUpState>(
       builder: (context, state) {
         return state.formStatus is FormSubmitting
@@ -120,7 +146,7 @@ class SignUpView extends StatelessWidget {
               )
             : ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
+                  if (formKey.currentState!.validate()) {
                     context.read<SignUpBloc>().add(SignUpSubmitted());
                   }
                 },
@@ -138,18 +164,17 @@ class SignUpView extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget _showLoginButton(BuildContext context) {
+class ShowLoginButton extends StatelessWidget {
+  const ShowLoginButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
         child: TextButton(
       onPressed: () => context.read<AuthCubit>().showLogin(),
       child: const Text('Already have an account? Sign in.'),
     ));
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
