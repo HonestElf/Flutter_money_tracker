@@ -24,7 +24,7 @@ class HomeView extends StatelessWidget {
       initialDate: DateTime.now(),
     );
 
-    if (chosenDate != null) {
+    if (chosenDate != null && context.mounted) {
       context.read<CostsBloc>().add(ChangeDate(date: chosenDate));
     }
   }
