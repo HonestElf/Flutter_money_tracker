@@ -32,72 +32,69 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: BlocListener<CostsBloc, CostsState>(
-      listener: (context, state) {
-        if (state.addCategoryWindowIsVisible) {
-          var costsBloc = context.read<CostsBloc>();
+      child: BlocConsumer<CostsBloc, CostsState>(
+        listener: (context, state) {
+          if (state.addCategoryWindowIsVisible) {
+            var costsBloc = context.read<CostsBloc>();
 
-          showDialog(
-            context: context,
-            builder: (_) => BlocProvider(
-                create: (_) => AddCubit(costsBloc: costsBloc),
-                child: const AddCategoryModal()),
-          );
-        } else if (state.addCostWindowIsVisible) {
-          var costsBloc = context.read<CostsBloc>();
-          final categoryName = state.currentEditingCategory;
+            showDialog(
+              context: context,
+              builder: (_) => BlocProvider(
+                  create: (_) => AddCubit(costsBloc: costsBloc),
+                  child: const AddCategoryModal()),
+            );
+          } else if (state.addCostWindowIsVisible) {
+            var costsBloc = context.read<CostsBloc>();
+            final categoryName = state.currentEditingCategory;
 
-          showDialog(
-            context: context,
-            builder: (_) => BlocProvider(
-                create: (_) => AddCubit(costsBloc: costsBloc),
-                child: AddCostModal(
-                  currentEditingCategory: categoryName!,
-                )),
-          );
-        }
-      },
-      child: BlocBuilder<CostsBloc, CostsState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: TextButton(
-                onPressed: () {
-                  _openDateModal(context);
-                },
-                child: Text(
-                  state.monthName,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              actions: [
-                IconButton(
-                    onPressed: () {
-                      context.read<CostsBloc>().add(OpenAddCategoryModal());
-                    },
-                    icon: const Icon(Icons.add))
-              ],
-            ),
-            body: Column(
-              children: const [
-                Expanded(
-                  flex: 3,
-                  child: CostsPieChart(),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: CostsCategories(),
-                ),
-              ],
-            ),
-          );
+            showDialog(
+              context: context,
+              builder: (_) => BlocProvider(
+                  create: (_) => AddCubit(costsBloc: costsBloc),
+                  child: AddCostModal(
+                    currentEditingCategory: categoryName!,
+                  )),
+            );
+          }
         },
+        builder: (context, state) => Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: TextButton(
+              onPressed: () {
+                _openDateModal(context);
+              },
+              child: Text(
+                state.monthName,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    context.read<CostsBloc>().add(OpenAddCategoryModal());
+                  },
+                  icon: const Icon(Icons.add))
+            ],
+          ),
+          body: Column(
+            children: const [
+              Expanded(
+                flex: 3,
+                child: CostsPieChart(),
+              ),
+              Expanded(
+                flex: 5,
+                child: CostsCategories(),
+              ),
+            ],
+          ),
+        ),
       ),
-    ));
+    );
   }
 }
 

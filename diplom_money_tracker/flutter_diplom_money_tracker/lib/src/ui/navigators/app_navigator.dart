@@ -12,9 +12,6 @@ import 'package:flutter_diplom_money_tracker/src/ui/loading_view/loading_view.da
 import 'package:flutter_diplom_money_tracker/src/ui/navigators/auth_navigator.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/view_router/view_router.dart';
 
-// Project imports:
-
-
 class AppNavigator extends StatelessWidget {
   const AppNavigator({super.key});
 
@@ -41,10 +38,17 @@ class AppNavigator extends StatelessWidget {
             //show session
             if (state is Authenticated)
               MaterialPage(
-                  child: RepositoryProvider(
-                      create: (context) => DatabaseRepository(
-                          userId: context.read<SessionCubit>().currentUser.uid),
-                      child: const ViewRouter()))
+                child: RepositoryProvider(
+                  create: (context) => DatabaseRepository(
+                      userId: context.read<SessionCubit>().currentUser.uid),
+                  child: BlocProvider(
+                    create: (context) => CostsBloc(
+                      dataRepo: context.read<DatabaseRepository>(),
+                    ),
+                    child: const ViewRouter(),
+                  ),
+                ),
+              ),
           ],
           onPopPage: (route, result) => route.didPop(result),
         );

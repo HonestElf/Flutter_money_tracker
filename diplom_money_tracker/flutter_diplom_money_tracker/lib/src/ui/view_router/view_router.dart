@@ -1,11 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:module_business/module_business.dart';
-import 'package:module_data/module_data.dart';
-
 // Project imports:
 import 'package:flutter_diplom_money_tracker/src/ui/details_view/details_view.dart';
 import 'package:flutter_diplom_money_tracker/src/ui/home_view/home_view.dart';
@@ -41,21 +36,17 @@ class _ViewRouterState extends State<ViewRouter> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: BlocProvider(
-          create: (context) =>
-              CostsBloc(dataRepo: context.read<DatabaseRepository>()),
-          child: PageView(
-            controller: _pageController,
-            children: const [
-              ViewRouterBody(),
-              ProfileView(),
-            ],
-            onPageChanged: (index) {
-              setState(() {
-                _currentPageIndex = index;
-              });
-            },
-          ),
+        body: PageView(
+          controller: _pageController,
+          children: const [
+            ViewRouterBody(),
+            ProfileView(),
+          ],
+          onPageChanged: (index) {
+            setState(() {
+              _currentPageIndex = index;
+            });
+          },
         ),
         bottomNavigationBar: BottomNavigationBar(
             onTap: (index) {
